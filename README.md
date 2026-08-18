@@ -2,7 +2,7 @@
 
 > Academic Monograph Batch-Writing Assistant —— 把"写一本十几章的书"变成 AI 可接力、可校验、可多人协作的流水线。
 
-**English summary**: A skill for AI-writing-assistant platforms (Claude Code / Claude Agent SDK / Cherry Studio, any environment supporting the Agent Skills spec). It turns monograph writing into a batch pipeline: one section directory per batch, three-step writing method (argument tree → evidence list → draft), layered summaries, a progress ledger as the single source of truth across sessions, and automated validation scripts (citation numbering, word-count tiers, table/figure numbering), plus stripped-version and Word-merge generation. Primarily in Chinese, targeting GB/T 7714 citation style by default (configurable).
+**English summary**: A skill for AI-writing-assistant platforms (Claude Code / Claude Agent SDK / Cherry Studio, any environment supporting the Agent Skills spec). It turns monograph writing into a batch pipeline: one section directory per batch, three-step writing method (argument tree → evidence list → draft), layered summaries, a progress ledger as the single source of truth across sessions, and automated validation scripts (citation numbering, word-count tiers, table/figure numbering), plus stripped-version and Word-merge generation. Features a bring-your-own evidence corpus (AI knowledge base / Zotero / project folder in any file format — PDF, Word, Excel, Markdown), so the AI cites only sources you provided and verifies each against the original. Primarily in Chinese, targeting GB/T 7714 citation style by default (configurable).
 
 ---
 
@@ -22,6 +22,7 @@
 |---|---|
 | AI 长文写作会"失忆" | 进度台账落盘为文件，跨会话/跨人无缝续作 |
 | AI 会编造文献 | 学术红线＋引用前逐条与原文核对＋禁止引用语料之外的文献 |
+| 文献散落各处，AI 够不着你的资料 | 自带文献语料：AI 只查你放进知识库/文件夹的资料，逐条核对后才引用（见第四节） |
 | 章节风格漂移 | 固定目录冻结结构＋术语/符号双台账＋每批校验 |
 | 引用编号、图表编号混乱 | 校验脚本自动检查（引用首现顺序、连续性、图表跳号），错误清零才能收批 |
 | 担心书稿数据外泄 | 脚本全本地运行、不联网、无遥测，书稿只存在你的电脑上（详见"数据隐私与技术特性"） |
@@ -62,7 +63,24 @@
 
 AI 会运行 `init_project.py` 生成项目骨架，然后与你确认字数分级和文献语料来源，之后每次你说"**继续**"，它就按台账推进下一个批次。每批次结束你会收到一份汇报：写了哪些文件、校验结果、下一批预告。
 
-## 四、四个自动化脚本（AI 替你跑，人也看得懂）
+## 四、自带文献语料（特色功能）
+
+写专著最怕两件事：**AI 编造参考文献**；**你的资料散落各处，AI 够不着**。本技能把两件事一起解决——你提前把文献放进语料库，AI 写作时只查你给的资料、逐条与原文核对后才引用，每个字都有出处。
+
+开工时的"语料接入访谈"四选一（随时可升级切换）：
+
+| 接入方式 | 一句话说明 | 适合谁 |
+|---|---|---|
+| ① AI 助手知识库 | 在你的 AI 助手应用内建知识库、上传文献（凡带知识库功能的 AI 助手均可，如 Cherry Studio、WorkBuddy 等，具体入口见所用应用的说明） | 资料多、想按含义检索 |
+| ② Zotero 等文献管理器 | 已在用文献管理软件的，直接指定一个集合 | 研究者 |
+| ③ 项目内 `02_语料/` 文件夹 | 初始化自动创建，把文献拖进去即可——**PDF、Word、Excel、Markdown 等格式不限，放什么、怎么分类全由你决定**（文件夹内有使用说明） | 任何人，最简起点 |
+| ④ 暂不接入 | 先写论证骨架，文献到位后再接入（降级模式：AI 只引你手工核实过的文献） | 文献还没收集齐的作者 |
+
+最省事的做法：把文献文件发给 AI 助手，说一句"**帮我把这些文献整理进项目的 02_语料 文件夹，按主题分类**"。
+
+语料的边界＝可引用的边界：放进语料的每一份资料，都应该是你愿意让它出现在参考文献表里的资料。四方式的搭建步骤、中途升级办法见技能文档 `references/evidence-corpus.md`。
+
+## 五、四个自动化脚本（AI 替你跑，人也看得懂）
 
 | 脚本 | 作用 | 什么时候用 |
 |---|---|---|
@@ -73,14 +91,14 @@ AI 会运行 `init_project.py` 生成项目骨架，然后与你确认字数分�
 
 所有项目参数集中在 `00_管理文件/书稿配置.json`——改字数要求、加豁免档，改这一个文件即可，脚本不用动。
 
-## 五、数据隐私与技术特性
+## 六、数据隐私与技术特性
 
 - **数据不出你的电脑**：四个脚本全部在本地运行，**不联网、无遥测、不收集任何数据**；你的书稿、目录、台账全部保存在你自己的磁盘上。文献检索通过你自己的 AI 助手与知识库进行，同样由你掌控。
 - **依赖极简**：脚本仅用 Python 标准库（装好 Python 3 即可），唯一额外依赖是生成 Word 稿的 `python-docx`（`pip3 install python-docx`）。
 - **平台兼容**：遵循 Agent Skills 开放规范，任何支持该规范的 AI 助手平台均可使用。
 - **问题反馈**：脚本缺陷或安全问题请通过 GitHub Issues 反馈。
 
-## 六、核心理念（为什么这样设计）
+## 七、核心理念（为什么这样设计）
 
 1. **台账即状态**：书的进度、约定、编号指针、已核实文献全部登记在项目内文件里。写在磁盘上而不是对话里——换会话、换人、换电脑都无损续作。
 2. **批次推进**：一个二级目录 = 一个批次（全部小节＋节级总结）。小步交付，跑校验至零错误才收批，错误不会累积成灾。
@@ -88,26 +106,30 @@ AI 会运行 `init_project.py` 生成项目骨架，然后与你确认字数分�
 4. **分层汇总防遗忘**：节级总结（600~800 字）→ 章末小结只依据各节级总结撰写，避免通读全章导致的上下文遗忘。
 5. **写作准备随文保留**：每小节文件含论点树与证据清单（三段式），审稿/返修时可溯源，成书时一键剥离。
 
-## 七、项目结构一览
+## 八、项目结构一览
 
 ```
 你的书/
 ├── 00_管理文件/            专著目录、书稿配置、进度台账、术语台账、指令清单
 ├── 01_书稿/第X章 章标题/Y.Z 节标题/   全部书稿（随批次逐节生成）
+├── 02_语料/                你的文献资料库（PDF/Word/Excel/Markdown 均可，自行补充）
 ├── 03_归档素材/            外部旧稿（走修复批次，不直接采用）
 └── 04_剥离版书稿/          纯正文版＋合并 Word 稿（脚本生成）
 ```
 
-## 八、多人协作
+## 九、多人协作
 
 - 每人负责若干章，工作方法完全一致（本技能即规范）；
 - 交接时：进度台账＋一份交接说明随工作空间移交；
 - 文献语料不随文件走时，接手人只用台账 §4"已核实文献缓存"，新文献请语料持有人代查——**宁可少引，不可错引**。
 
-## 九、常见问题
+## 十、常见问题
 
 **Q：我完全不会命令行，能用吗？**
 能。安装只需把 README“快速开始”里的那句话复制给你的 AI 助手；之后所有脚本也由 AI 助手运行，你只需要用日常语言交流（"继续""下一章""把第二章字数调到 1200~1800"）。
+
+**Q：我有一堆文献（PDF/Word/Excel/Markdown 混杂），怎么让 AI 用它们？**
+最简单：全部放进项目初始化时自动创建的 `02_语料/` 文件夹（内有使用说明），格式不限、内容由你决定，然后对 AI 说"语料在 02_语料/，写作时从这里检索核对"。资料量大或想按含义检索时，可升级为 AI 助手知识库或 Zotero（见"自带文献语料"一节）。无论哪种方式，AI 只引用语料内的资料，且逐条与原文核对后才写入参考文献。
 
 **Q：我的书稿会被上传或收集吗？**
 不会。本技能的四个脚本全部在你的电脑本地运行，不联网、无遥测、不收集任何数据；书稿与台账都保存在你自己的磁盘上。文献检索经由你自己的 AI 助手与知识库完成，由你掌控（详见"数据隐私与技术特性"一节）。
@@ -124,7 +146,7 @@ AI 会运行 `init_project.py` 生成项目骨架，然后与你确认字数分�
 **Q：写作中途想改目录怎么办？**
 目录冻结是严肃约定：改动须作者确认后升版（v2、v3…），并同步台账。已完成章节不悄悄重写——历史矛盾登记台账 §5 待裁定。详见技能内 `references/` 文档。
 
-## 十、贡献与许可
+## 十一、贡献与许可
 
 - 本技能源自一部真实学术专著的完整写作实践，方法论经 200+ 小节批次检验。
 - 欢迎通过 Issue / Pull Request 反馈改进（批次经验、新校验规则、其他引用格式适配等）。

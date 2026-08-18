@@ -43,7 +43,7 @@ FIG_RE = re.compile(r"图\s*(\d+)\s*[-–—]\s*(\d+)")
 
 DEFAULT_CONFIG = {
     "manuscript_dir": "01_书稿",
-    "excluded_dirs": ["00_管理文件", "03_归档素材", "04_剥离版书稿", ".claude", ".git"],
+    "excluded_dirs": ["00_管理文件", "02_语料", "03_归档素材", "04_剥离版书稿", ".claude", ".git"],
     "skip_name_keywords": ["台账", "校核报告", "评估报告", "专著目录", "写作指令清单", "说明"],
     "word_targets": {"default": [1500, 2000], "by_chapter": {},
                      "section_summary": [600, 800], "chapter_summary": [300, 500]},

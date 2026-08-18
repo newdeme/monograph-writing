@@ -40,6 +40,21 @@ ITEM_RE = re.compile(r"^- (\d+\.\d+\.\d+) (.+)$")
 
 SKIP_NAME_KEYWORDS = ["台账", "校核报告", "评估报告", "专著目录", "写作指令清单", "说明"]
 
+CORPUS_NOTE = """# 这里是你的文献资料库（02_语料/）
+
+把你想让 AI 引用的文献资料放进本文件夹即可——**放什么、什么格式，完全由你决定**。
+
+- 支持格式：PDF、Word、Excel、Markdown、TXT 等任何你的 AI 助手能阅读的格式
+  （Excel 适合数据表/参数表；Word/Markdown 适合笔记、综述、规范摘编）；
+- 建议按主题或类型分子文件夹（如 期刊论文/、规范标准/、数据表格/、读书笔记/）；
+- 重复副本建议去重；多篇文章合订的 PDF 建议拆分后放入；
+- 写作中 AI 只引用本文件夹（或你登记的其他语料）内的资料，并逐条与原文核对题录。
+
+铁律：语料的边界＝可引用的边界。放进来的每一份资料，都应该是你愿意让它出现在
+参考文献表里的资料。更多接入方式（AI 知识库 / Zotero / 降级模式）见技能文档
+references/evidence-corpus.md。
+"""
+
 SAMPLE_CATALOG = """# 《示例书名》目录（示例版——请作者改写后冻结）
 
 > 使用说明：本文件是全书章节结构与编号的唯一依据。请按下方格式改写为你的目录，
@@ -71,7 +86,11 @@ LEDGER_TMPL = """# 写作进度台账
 - 书名：《{title}》（初始化日期：{today}）
 - 目录：`00_管理文件/{catalog_name}` 为全书章节结构与编号的**唯一依据**（冻结版）
 - 引用格式：{cite}，按正文首次出现顺序编号（含表格阅读序）
-- 文献语料（红线：引用仅限此来源）：【初始化后由作者/助手填写：知识库名称 / Zotero 库 / PDF 文件夹路径】
+- 文献语料（红线：引用仅限此来源；接入方式四选一，详见技能 references/evidence-corpus.md）：
+  - 【接入方式】（①AI 客户端知识库 / ②Zotero 等文献管理器 / ③02_语料/ 文件夹 / ④暂不接入-降级模式）：【待访谈后填写】
+  - 【名称/位置】（如：AI 助手内知识库"书稿文献"；或 Zotero 集合名；或 02_语料/）：【待填写】
+  - 【检索方式】（如：知识库搜索；或条目检索；或 AI 直接读文件）：【待填写】
+  - 【核对方式】新文献题录须读原文首页核对后写入，核对过即登记 §4 缓存；降级模式下只可引用作者手工核实过的文献
 - 图表编号：`图X-Y` / `表X-Y`（X=章号，Y 章内连续），图表须有中文标题且正文有解读
 - 术语/符号一致性：登记于《术语与符号一致性台账.md》；符号体系锚点：【填写：全书符号在哪一小节统一确立】
 - 文件命名：小节 `X.Y.Z 小节标题.md`；节级总结 `第X章 Y.Z节 节标题 章节总结.md`；章末小结 `X.Y 小结.md`（与目录逐字一致，分隔符用空格）
@@ -144,7 +163,7 @@ CONFIG_TMPL = """{{
   "catalog_file": "00_管理文件/{catalog_name}",
   "manuscript_dir": "01_书稿",
   "stripped_dir": "04_剥离版书稿",
-  "excluded_dirs": ["00_管理文件", "03_归档素材", "04_剥离版书稿", ".claude", ".git"],
+  "excluded_dirs": ["00_管理文件", "02_语料", "03_归档素材", "04_剥离版书稿", ".claude", ".git"],
   "skip_name_keywords": {skip_kw},
   "word_targets": {{
     "default": [1500, 2000],
@@ -218,6 +237,11 @@ def main():
     for d in ("01_书稿", "03_归档素材", "04_剥离版书稿"):
         (root / d).mkdir(exist_ok=True)
         (root / d / ".gitkeep").touch()
+    # 02_语料/：作者的文献资料库（格式不限、内容自定），附使用说明
+    corpus = root / "02_语料"
+    corpus.mkdir(exist_ok=True)
+    if not (corpus / "把文献放这里.md").is_file():
+        (corpus / "把文献放这里.md").write_text(CORPUS_NOTE, encoding="utf-8")
 
     # 定位/生成目录文件
     catalog = Path(args.catalog).expanduser().resolve() if args.catalog else None
@@ -288,7 +312,7 @@ def main():
     print("  生成文件：00_管理文件/ 下 书稿配置.json、写作进度台账.md、"
           "术语与符号一致性台账.md、写作指令清单.md")
     print("\n下一步（建议由 AI 助手代办）：")
-    print("  1. 与作者核对《书稿配置.json》（字数分级、语料来源），并把语料来源填进台账 §1；")
+    print("  1. 与作者核对《书稿配置.json》（字数分级），并完成语料接入访谈（四选一，见技能 references/evidence-corpus.md）登记台账 §1；")
     print("  2. 确认第一批次范围后，按技能三步法开工；")
     print(f"  3. 每批次收尾跑：python3 validate_manuscript.py --root \"{root}\"")
     return 0
