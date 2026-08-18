@@ -29,9 +29,13 @@
 
 ## 三、快速开始（3 步）
 
-**第 1 步：把本文件夹放进你的 AI 助手技能目录**
-- Cherry Studio 用户：应用会自动同步技能目录（设置里可查看技能库位置）；
-- Claude Code 用户：放入 `~/.claude/skills/` 或项目 `.claude/skills/`。
+**第 1 步：安装——复制一句话发给你的 AI 助手即可**
+
+把下面这句话原样复制，粘贴到你的 AI 助手对话框里发送，它就会替你完成全部安装：
+
+> 请为我安装 GitHub 上的 monograph-writing 技能：克隆 https://github.com/newdeme/monograph-writing 仓库，把其中全部内容（SKILL.md、references/、scripts/ 等）完整复制到你的技能库目录，安装后确认技能已被识别，并告诉我怎么开始使用。
+
+装好后新开一个对话即可生效。如果你会用命令行（需已装 Node.js），也可以直接执行：`npx skills add newdeme/monograph-writing`。
 
 **第 2 步：准备你的目录**
 把全书大纲整理成一个 Markdown 文件（格式如下，让 AI 帮你排版也行）：
@@ -95,7 +99,7 @@ AI 会运行 `init_project.py` 生成项目骨架，然后与你确认字数分�
 ## 八、常见问题
 
 **Q：我完全不会命令行，能用吗？**
-能。所有脚本由 AI 助手运行，你只需要用日常语言交流（"继续""下一章""把第二章字数调到 1200~1800"）。
+能。安装只需把 README“快速开始”里的那句话复制给你的 AI 助手；之后所有脚本也由 AI 助手运行，你只需要用日常语言交流（"继续""下一章""把第二章字数调到 1200~1800"）。
 
 **Q：不用 GB/T 7714 引用格式行吗？**
 行。在 `书稿配置.json` 里改 `citation_style`，并把 `check_citation_style` 设为 `false`（该项检查仅适配 GB/T 7714 的类型标识）。
