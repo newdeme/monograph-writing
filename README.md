@@ -48,7 +48,7 @@ npx skills add newdeme/monograph-writing
 
 No command line? Copy this sentence and paste it into your AI assistant — it will do everything:
 
-> Please install the monograph-writing skill from GitHub for me: clone the repository https://github.com/newdeme/monograph-writing, copy its full contents (SKILL.md, references/, scripts/, etc.) into your skill library, confirm the skill is recognized, and tell me how to get started.
+> Please install the monograph-writing skill from GitHub for me: clone the repository https://github.com/newdeme/monograph-writing, then copy only the three items the skill needs — SKILL.md, references/, and scripts/ — into a monograph-writing/ folder in your skill library (skip tests/, examples/, docs/ and .github/ — they are repository development files), confirm the skill is recognized, and tell me how to get started.
 
 Works with any AI assistant that supports the Agent Skills open specification (Claude Code, Claude Agent SDK, Cherry Studio, …). Start a new conversation after installing.
 

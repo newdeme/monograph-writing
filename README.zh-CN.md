@@ -43,7 +43,7 @@
 
 把下面这句话原样复制，粘贴到你的 AI 助手对话框里发送，它就会替你完成全部安装：
 
-> 请为我安装 GitHub 上的 monograph-writing 技能：克隆 https://github.com/newdeme/monograph-writing 仓库，把其中全部内容（SKILL.md、references/、scripts/ 等）完整复制到你的技能库目录，安装后确认技能已被识别，并告诉我怎么开始使用。
+> 请为我安装 GitHub 上的 monograph-writing 技能：克隆 https://github.com/newdeme/monograph-writing 仓库，把技能运行所需的三个项目——SKILL.md、references/、scripts/——复制到你技能库目录下的 monograph-writing/ 文件夹（tests/、examples/、docs/、.github/ 等仓库开发文件无需复制），安装后确认技能已被识别，并告诉我怎么开始使用。
 
 装好后新开一个对话即可生效。如果你会用命令行（需已装 Node.js），也可以直接执行：`npx skills add newdeme/monograph-writing`。
 
