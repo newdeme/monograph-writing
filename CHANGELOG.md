@@ -2,6 +2,25 @@
 
 本项目遵循[语义化版本](https://semver.org/)：功能新增 → 次版本号，问题修复 → 修订号。
 
+## v1.2.0（2026-08-19）
+
+### 新功能
+
+- **双语 README**：README.md 改为英文默认版（GitHub 检索与国际访客直达），中文完整版移至 README.zh-CN.md，两文顶部互链＋徽章行（CI / Python / License / Release / PRs Welcome）；
+- **示例项目 mini demo**（`examples/`）：完整走通全流程的最小项目《学术写作方法论（示例）》——2 章（第一章 2 节×2 小节完整三段式＋节级总结＋章末小结；第二章仅骨架演示"待并入"）、全流程导览 README、`make_demo.py` 再生成脚本；字数档缩小以保持可读（配置可改）；
+- **SKILL.md description 双语化**：中文原文不动，追加英文触发段（英文请求亦可命中技能）。
+
+### 测试与 CI
+
+- 新增 4 个测试文件＋共享夹具（12 个测试全绿）：validate 正反用例（引用乱序/缺标题/文献数不符/字数/表编号跳号逐一检出）、剥离版内容断言、Word 合并产物断言、demo 一致性（提交剥离版＝脚本再生成产物）；
+- CI 升级（保留文件名 python-package.yml 稳住徽章 URL）：Python 矩阵扩至 3.9~3.13、setup-python@v5、flake8 仅阻断致命错误、新增独立 merge-word job（python-docx 依赖隔离）、双 job 超时保护。
+
+### 开源治理
+
+- Issue 模板（bug 反馈／功能建议与实战经验分享）；
+- 仓库 description 与 14 个 topics（ai-writing / academic-writing / agent-skills 等）；
+- 社交预览图 `docs/social-preview.png`（1280×640，AI 生成；上传入口：仓库 Settings → Social preview）。
+
 ## v1.1.0（2026-08-18）
 
 ### 新功能：自带文献语料（BYO corpus，四方式接入）
