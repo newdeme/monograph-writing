@@ -1,6 +1,6 @@
 ---
 name: monograph-writing
-description: 学术专著与长篇书稿的批次化写作管理系统（通用版）。当用户表示要写书、写专著、写教材、编写技术书，或要求"继续写""下一批""下一章""推进章节""初始化写作项目""校验书稿""生成纯正文版""合并 Word 书稿"，或提到"进度台账""固定目录""批次写作""三步法"时使用。提供：项目脚手架初始化（目录/台账/指令清单/配置）、以二级目录为批次的写作工作流（论点树-证据清单-提纲三步法）、节级总结与章末小结分层汇总、引用编号与字数分级自动校验、跨会话断点管理、外部草稿修复、全书收尾（剥离版+合并 Word 稿）。凡涉及整本书或多章节的长文写作项目，即使未明说"专著"，也应使用本技能。 English: batch-writing pipeline for academic monographs and long-form books. Use whenever the user wants to write a book, monograph, textbook or technical handbook, says "continue", "next batch" or "next chapter", asks to initialize a writing project, validate a manuscript, generate a stripped clean copy, or merge chapters into a Word document; also for any multi-chapter long-form writing project even if the word "monograph" is not mentioned.
+description:学术专著与长篇书稿的批次化写作管理系统（通用版）。当用户表示要写书、写专著、写教材、编写技术书，或要求"继续写""下一批""下一章""推进章节""初始化写作项目""校验书稿""生成纯正文版""合并 Word 书稿"，或提到"进度台账""固定目录""批次写作""三步法"时使用。提供：项目脚手架初始化（目录/台账/指令清单/配置）、以二级目录为批次的写作工作流（论点树-证据清单-提纲三步法）、节级总结与章末小结分层汇总、引用编号与字数分级自动校验、跨会话断点管理、外部草稿修复、全书收尾（剥离版+合并 Word 稿）。凡涉及整本书或多章节的长文写作项目，即使未明说"专著"，也应使用本技能。 English: batch-writing pipeline for academic monographs and long-form books. Use whenever the user wants to write a book, monograph, textbook or technical handbook, says "continue", "next batch" or "next chapter", asks to initialize a writing project, validate a manuscript, generate a stripped clean copy, or merge chapters into a Word document; also for any multi-chapter long-form writing project even if the word "monograph" is not mentioned.
 ---
 
 # 学术专著批次化写作助手（通用版）
