@@ -1,0 +1,20 @@
+{
+  "book_title": "学术写作方法论（示例）",
+  "author": "monograph-writing demo",
+  "citation_style": "GB/T 7714（顺序编码制）",
+  "catalog_file": "00_管理文件/专著目录.md",
+  "manuscript_dir": "01_书稿",
+  "stripped_dir": "04_剥离版书稿",
+  "excluded_dirs": ["00_管理文件", "02_语料", "03_归档素材", "04_剥离版书稿", ".claude", ".git"],
+  "skip_name_keywords": ["台账", "校核报告", "评估报告", "专著目录", "写作指令清单", "说明"],
+  "word_targets": {
+    "default": [120, 200],
+    "by_chapter": {},
+    "section_summary": [80, 150],
+    "chapter_summary": [60, 120]
+  },
+  "special_tiers": [],
+  "exempt_patterns": [],
+  "tolerance": 0.15,
+  "check_citation_style": true
+}
