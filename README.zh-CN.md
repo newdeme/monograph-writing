@@ -154,10 +154,25 @@ AI 会运行 `init_project.py` 生成项目骨架，然后与你确认字数分�
 **Q：写作中途想改目录怎么办？**
 目录冻结是严肃约定：改动须作者确认后升版（v2、v3…），并同步台账。已完成章节不悄悄重写——历史矛盾登记台账 §5 待裁定。详见技能内 `references/` 文档。
 
-## 十一、贡献与许可
+## 十一、引用本项目
+
+如果本技能对你的科研、教学或工作有帮助，引用它就是最好的支持。仓库首页的**"Cite this repository"**按钮（由 [`CITATION.cff`](CITATION.cff) 驱动）可一键生成规范引用，也可直接使用下面的 BibTeX 条目：
+
+```bibtex
+@software{newdeme_monograph_writing,
+  author  = {newdeme},
+  title   = {monograph-writing: Academic Monograph Batch-Writing Assistant},
+  year    = {2026},
+  url     = {https://github.com/newdeme/monograph-writing},
+  version = {1.2.1},
+  license = {Apache-2.0}
+}
+```
+
+## 十二、贡献与许可
 
 - 本技能源自一部真实学术专著的完整写作实践，方法论经 200+ 小节批次检验。
-- 欢迎通过 Issue / Pull Request 反馈改进（批次经验、新校验规则、其他引用格式适配等）。
+- 欢迎通过 Issue / Pull Request 反馈改进（批次经验、新校验规则、其他引用格式适配等）。商业合作、私有化部署指导或定制开发，请通过 GitHub Issues 与维护者联系。
 - 本项目以 [Apache License 2.0](LICENSE) 发布，版权所有 © 2026 newdeme；含专利授权条款，可放心在学术与商业项目中使用。
 
 ---

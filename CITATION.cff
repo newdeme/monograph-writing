@@ -1,0 +1,33 @@
+# This CITATION.cff file enables the "Cite this repository" button on GitHub.
+# 本文件驱动 GitHub 仓库首页的"Cite this repository"按钮。
+cff-version: 1.2.0
+message: >-
+  如果您在学术研究、教学或工程中使用了本技能，请引用本仓库。
+  If you use this skill in your research, teaching or work, please cite it.
+title: monograph-writing
+authors:
+  - name: newdeme
+    website: "https://github.com/newdeme"
+type: software
+repository-code: "https://github.com/newdeme/monograph-writing"
+abstract: >-
+  A batch-writing pipeline for academic monographs and long-form books,
+  packaged as an Agent Skill for AI writing assistants. It turns book
+  writing into small verifiable batches: a progress ledger persists all
+  state on disk for seamless continuation across sessions and co-authors;
+  an academic red-line system forbids fabricated references and restricts
+  citations to the author's own evidence corpus (AI knowledge base, Zotero,
+  or an in-project folder of any file format); and four validation scripts
+  automatically check citation numbering, word-count tiers, and
+  figure/table numbering before each batch closes, then generate stripped
+  clean copies and a fully-styled merged Word manuscript.
+keywords:
+  - academic-writing
+  - monograph
+  - AI-assisted-writing
+  - agent-skills
+  - writing-pipeline
+  - citation-validation
+license: Apache-2.0
+version: 1.2.1
+date-released: "2026-08-19"

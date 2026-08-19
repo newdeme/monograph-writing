@@ -2,6 +2,16 @@
 
 本项目遵循[语义化版本](https://semver.org/)：功能新增 → 次版本号，问题修复 → 修订号。
 
+## v1.2.1（2026-08-19）
+
+### 开源治理（学术引用与权益防护）
+
+- 新增 **CITATION.cff**：GitHub 仓库首页出现"Cite this repository"按钮，使用者一键获得规范引用（含 BibTeX 条目，README 双语同步引用小节）——学术引用从第一天开始积累；
+- **CONTRIBUTING.md 新增贡献授权条款**（中英对照轻量 CLA）：提交 PR 即授予维护者以 Apache-2.0 及未来其他许可使用与再许可贡献内容的权利，保持未来协议调整与商业化灵活性（当前不设单独 CLA 签署流程）；
+- 新增 **SECURITY.md**：安全报告走 GitHub 私密漏洞报告通道，不暴露维护者邮箱；
+- **LICENSE 版权行补 GitHub 主页链接**（与 NOTICE 对齐）：`Copyright 2026 newdeme (https://github.com/newdeme)`，钉死"昵称→账号"版权证据链；
+- README 双语"贡献与许可"节加入商业合作入口（通过 GitHub Issues 联系，不挂邮箱——保护维护者隐私）。
+
 ## v1.2.0（2026-08-19）
 
 ### 新功能

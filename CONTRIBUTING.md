@@ -26,6 +26,12 @@
 4. 新增文件顶部加 SPDX 标识（`# SPDX-License-Identifier: Apache-2.0`）；
 5. 提交 PR 并简述动机与验证方式。
 
+## 贡献授权（Contribution License Agreement）
+
+**中文**：当你向本项目提交 Pull Request 时，即表示你同意：你拥有所提交内容的相应权利，并授予项目维护者（newdeme）以 Apache License 2.0 及未来可能采用的其他许可方式使用、复制、修改、再许可（sublicense）你的贡献内容的权利。这一约定用于保持项目未来调整许可协议与商业化的灵活性；本项目当前不设单独的 CLA 签署流程，提交 PR 即视为同意本条款。
+
+**English**: By submitting a Pull Request to this project, you agree that you have the necessary rights to your contribution and that you grant the project maintainer (newdeme) a right to use, copy, modify, and sublicense your contribution under Apache License 2.0 and under any other license that may be adopted by the project in the future. This keeps the project flexible for future relicensing and commercialization. There is currently no separate CLA sign-off process; submitting a PR indicates your acceptance of these terms.
+
 ## 行为约定
 
 保持善意与专业讨论；不贬低任何提问；引用他人工作时如实署名——这也是本项目方法论本身的要求。

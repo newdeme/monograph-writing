@@ -162,10 +162,25 @@ The skill follows the Agent Skills open specification (SKILL.md + scripts + refe
 **Q: What if I need to change the outline mid-writing?**
 The frozen outline is a serious contract: changes require author approval and a version bump (v2, v3…), recorded in the ledger. Completed chapters are never silently rewritten — contradictions are logged for adjudication. See the `references/` docs.
 
-## 11. Contributing & license
+## 11. Citing this project
+
+If this skill helps your research, teaching, or work, a citation is the best way to support it. Click the **"Cite this repository"** button on the repository homepage (driven by [`CITATION.cff`](CITATION.cff)) to get a ready-to-use citation, or use the BibTeX entry below:
+
+```bibtex
+@software{newdeme_monograph_writing,
+  author  = {newdeme},
+  title   = {monograph-writing: Academic Monograph Batch-Writing Assistant},
+  year    = {2026},
+  url     = {https://github.com/newdeme/monograph-writing},
+  version = {1.2.1},
+  license = {Apache-2.0}
+}
+```
+
+## 12. Contributing & license
 
 - This skill distills the complete writing practice of a real academic monograph — the methodology is battle-tested over 200+ section batches.
-- Feedback and improvements welcome via Issues / Pull Requests (batch experiences, new validation rules, adaptations to other citation styles).
+- Feedback and improvements welcome via Issues / Pull Requests (batch experiences, new validation rules, adaptations to other citation styles). For commercial cooperation, private-deployment guidance, or custom development, please reach the maintainer via GitHub Issues.
 - Released under the [Apache License 2.0](LICENSE), © 2026 newdeme — includes patent grant, safe for academic and commercial use.
 
 ---
