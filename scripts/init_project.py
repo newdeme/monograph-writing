@@ -221,8 +221,11 @@ def gen_instructions(title, chapters):
 
 
 def main():
-    ap = argparse.ArgumentParser(description="专著写作项目初始化（详细说明见文件头注释）")
-    ap.add_argument("root", help="项目根目录（将在此创建骨架）")
+    ap = argparse.ArgumentParser(
+        description="专著写作项目初始化（详细说明见文件头注释）",
+        epilog="示例：目录已就位时 python3 init_project.py 我的书/ --title 「书名」；"
+               "目录在别处时加 --catalog 目录.md；还没有目录时加 --sample 先生成示例。")
+    ap.add_argument("root", help="项目根目录（一个文件夹；将在此创建骨架）")
     ap.add_argument("--catalog", help="专著目录.md 路径（缺省在 root/00_管理文件/ 下寻找）")
     ap.add_argument("--title", help="书名（缺省取目录 H1 标题中的《书名》）")
     ap.add_argument("--sample", action="store_true",
@@ -232,6 +235,12 @@ def main():
     args = ap.parse_args()
 
     root = Path(args.root).expanduser().resolve()
+    if root.is_file():
+        print(f"[参数错误] {root} 是一个文件，而项目根目录应是一个文件夹。")
+        print("  出了什么：把《专著目录.md》的文件路径当成项目根目录传入了。")
+        print("  怎么改：把项目根目录（一个文件夹）作为第一个参数，目录文件用 --catalog 指定，例如：")
+        print(f"      python3 init_project.py <项目根目录> --catalog {root} --title 「书名」")
+        return 1
     mgmt = root / "00_管理文件"
     mgmt.mkdir(parents=True, exist_ok=True)
     for d in ("01_书稿", "03_归档素材", "04_剥离版书稿"):

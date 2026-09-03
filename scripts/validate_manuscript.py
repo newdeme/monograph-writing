@@ -58,7 +58,19 @@ def load_config(root: Path) -> dict:
     cfg = dict(DEFAULT_CONFIG)
     cfile = root / "00_管理文件" / "书稿配置.json"
     if cfile.is_file():
-        user = json.loads(cfile.read_text(encoding="utf-8"))
+        try:
+            user = json.loads(cfile.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as e:
+            print(f"[配置文件语法错误] {cfile}")
+            print(f"  出了什么：第 {e.lineno} 行第 {e.colno} 列附近 JSON 语法有误（{e.msg}）。")
+            print("  常见原因：上一行行尾漏了逗号／多写了逗号；字符串两端误用了中文引号；多余的换行。")
+            print("  怎么改：用编辑器打开该文件定位到该行补上逗号（或改回英文双引号 \"），")
+            print(f"          改完先自检：python3 -m json.tool \"{cfile}\" ——无报错再重跑本脚本。")
+            sys.exit(1)
+        except UnicodeDecodeError:
+            print(f"[配置文件编码错误] {cfile} 不是 UTF-8 编码，无法读取。")
+            print("  怎么改：用编辑器打开该文件，另存为 UTF-8 编码后重跑本脚本。")
+            sys.exit(1)
         cfg.update({k: v for k, v in user.items() if v is not None})
         wt = cfg.get("word_targets") or {}
         merged = dict(DEFAULT_CONFIG["word_targets"])
@@ -170,7 +182,10 @@ def word_verdict(n: int, lo: int, hi: int, tol: float):
 
 
 def main():
-    ap = argparse.ArgumentParser(description="专著书稿校验（详细说明见文件头注释）")
+    ap = argparse.ArgumentParser(
+        description="专著书稿校验（详细说明见文件头注释）",
+        epilog="示例：在项目根目录直接跑 python3 validate_manuscript.py；"
+               "在别处跑时加 --root <项目根目录>。报错看不懂时，把完整输出复制给 AI 助手代修。")
     ap.add_argument("--root", default=".", help="项目根目录（含 00_管理文件/书稿配置.json）")
     ap.add_argument("--manuscript", default=None,
                     help="书稿目录（缺省取配置 manuscript_dir）")
@@ -211,7 +226,14 @@ def main():
             continue
         if excl_dirs.intersection(p.parts):
             continue
-        text = p.read_text(encoding="utf-8")
+        try:
+            text = p.read_text(encoding="utf-8")
+        except UnicodeDecodeError as e:
+            print(f"[ERROR] {p.name}（编码错误）")
+            print(f"    - 出了什么：文件不是 UTF-8 编码（位置 {e.start} 附近无法解码）。")
+            print(f"    - 怎么改：用编辑器打开「{p}」另存为/转换为 UTF-8 编码后重跑本脚本。")
+            total_err += 1
+            continue
         errs, warns, kind, chap = [], [], None, None
 
         if m := SUBSEC_RE.match(p.name):

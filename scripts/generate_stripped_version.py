@@ -141,7 +141,9 @@ def merge_chapter(ch, stripped_texts):
 
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
-    ap = argparse.ArgumentParser(description="书稿剥离版生成（详细说明见文件头注释）")
+    ap = argparse.ArgumentParser(
+        description="书稿剥离版生成（详细说明见文件头注释）",
+        epilog="示例：python3 generate_stripped_version.py --root . （在项目根目录跑，剥离全部章节）。")
     ap.add_argument("--root", default=".", help="项目根目录")
     ap.add_argument("chapters", nargs="*", help="可选：仅处理目录名以指定前缀开头的章节")
     args = ap.parse_args(argv)
@@ -167,6 +169,7 @@ def main(argv=None):
 
     print(f"待处理章节：{len(chapters)} 个（源：{src} → 输出：{dst}）")
     total = 0
+    total_failed = 0
     for ch in chapters:
         ch_total, ch_err = 0, []
         src_ch = os.path.join(src, ch)
@@ -180,6 +183,10 @@ def main(argv=None):
             try:
                 text = open(src_path, encoding="utf-8").read()
                 stripped = parse_and_strip(text, rel)
+            except UnicodeDecodeError:
+                ch_err.append(f"  [跳过] {rel}: 文件不是 UTF-8 编码——"
+                              f"请用编辑器打开并另存为 UTF-8 后重跑本脚本")
+                continue
             except ValueError as e:
                 ch_err.append(f"  [跳过] {rel}: {e}")
                 continue
@@ -194,12 +201,19 @@ def main(argv=None):
             with open(os.path.join(dst, f"{ch}.md"), "w", encoding="utf-8") as f:
                 f.write(merged)
         total += ch_total
+        total_failed += len(ch_err)
         print(f"  {ch}: 剥离 {ch_total} 篇 ＋ 章合并稿 1 份")
         for msg in ch_err:
             print(msg)
         if ch_err:
             print(f"  !! {ch} 有 {len(ch_err)} 篇结构异常未剥离，需人工核查")
+    if total == 0:
+        print(f"未生成任何剥离版：{total_failed} 篇文件异常（原因见上方[跳过]各行）。")
+        print("  请先按提示修复这些文件，再重跑本脚本；不要带着断链去跑 merge_to_word.py。")
+        return 1
     print(f"完成：共生成剥离版 {total} 篇 → {dst}")
+    if total_failed:
+        print(f"注意：另有 {total_failed} 篇结构/编码异常未剥离（见上方[跳过]），需人工核查。")
     print("下一步可运行 merge_to_word.py 生成合并 Word 稿。")
     return 0
 

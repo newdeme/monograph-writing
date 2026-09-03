@@ -162,6 +162,15 @@ The skill follows the Agent Skills open specification (SKILL.md + scripts + refe
 **Q: What if I need to change the outline mid-writing?**
 The frozen outline is a serious contract: changes require author approval and a version bump (v2, v3…), recorded in the ledger. Completed chapters are never silently rewritten — contradictions are logged for adjudication. See the `references/` docs.
 
+**Q: A script printed an error I don't understand. What now?**
+You don't need to understand it. Every script error follows the format *what happened → common causes → how to fix*; do what the "how to fix" line says and re-run. Common errors (broken config JSON, wrong file encoding, filename drift, missing python-docx) have a symptom→cause→fix lookup table in `references/troubleshooting.md`. The easiest route: paste the full output to your AI assistant and say "fix this for me".
+
+**Q: My "book" is really a training handbook / collected report — does it still apply?**
+Yes. Any multi-chapter long manuscript fits. Word-count tiers live in `书稿配置.json` and are fully adjustable — global tiers, per-chapter overrides, and special-case exemptions are all supported, so defaults never box you in. For single papers or short documents the batch machinery adds little value and isn't recommended.
+
+**Q: Does it work on Windows? What about non-Chinese manuscripts?**
+The scripts are pure Python standard library (only Word merging needs `python-docx`) and run on macOS/Linux/Windows; quote paths containing spaces or CJK characters. Chinese-language writing is the best supported (word counts are measured in Chinese characters; GB/T 7714 type-identifier checking included). Other languages run, but counting and punctuation rules may be imprecise — multilingual support is on the roadmap.
+
 ## 11. Citing this project
 
 If this skill helps your research, teaching, or work, a citation is the best way to support it. Click the **"Cite this repository"** button on the repository homepage (driven by [`CITATION.cff`](CITATION.cff)) to get a ready-to-use citation, or use the BibTeX entry below:
@@ -172,7 +181,7 @@ If this skill helps your research, teaching, or work, a citation is the best way
   title   = {monograph-writing: Academic Monograph Batch-Writing Assistant},
   year    = {2026},
   url     = {https://github.com/newdeme/monograph-writing},
-  version = {1.2.1},
+  version = {1.3.0},
   license = {Apache-2.0}
 }
 ```

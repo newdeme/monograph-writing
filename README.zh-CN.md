@@ -154,6 +154,15 @@ AI 会运行 `init_project.py` 生成项目骨架，然后与你确认字数分�
 **Q：写作中途想改目录怎么办？**
 目录冻结是严肃约定：改动须作者确认后升版（v2、v3…），并同步台账。已完成章节不悄悄重写——历史矛盾登记台账 §5 待裁定。详见技能内 `references/` 文档。
 
+**Q：脚本报错看不懂怎么办？**
+不用看懂。脚本报错遵循「出了什么 → 常见原因 → 怎么改」格式，照"怎么改"执行后重跑即可；常见报错（配置 JSON 语法、文件编码、文件名漂移、Word 依赖缺失）的对照速查见技能内 `references/troubleshooting.md`。最省事的做法：把报错原文复制给 AI 助手，说"帮我修好它"。
+
+**Q：我的书是讲义/报告集，不是严格意义的专著，能用吗？**
+能。只要是多章节长篇书稿都适用；字数分级是《书稿配置.json》里的可调项——整体调档、按章调档、特殊档豁免都可以，不必被默认值卡住。单篇论文、短文则收益不大，不建议引入。
+
+**Q：Windows 能用吗？其他语言的稿子呢？**
+脚本为纯 Python 标准库（仅 Word 合并需 python-docx），macOS/Linux/Windows 均可；路径含空格或中文时在命令里整体加引号。中文写作的适配最完整（字数按中文字符计、含 GB/T 7714 类型标识检查）；其他语言可运行，但字数与标点口径可能失准，多语言支持在 Roadmap 中。
+
 ## 十一、引用本项目
 
 如果本技能对你的科研、教学或工作有帮助，引用它就是最好的支持。仓库首页的**"Cite this repository"**按钮（由 [`CITATION.cff`](CITATION.cff) 驱动）可一键生成规范引用，也可直接使用下面的 BibTeX 条目：
@@ -164,7 +173,7 @@ AI 会运行 `init_project.py` 生成项目骨架，然后与你确认字数分�
   title   = {monograph-writing: Academic Monograph Batch-Writing Assistant},
   year    = {2026},
   url     = {https://github.com/newdeme/monograph-writing},
-  version = {1.2.1},
+  version = {1.3.0},
   license = {Apache-2.0}
 }
 ```

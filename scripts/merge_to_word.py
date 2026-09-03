@@ -88,11 +88,33 @@ def parse_catalog(path):
     return chapters
 
 
+def _sec_dir(cd, sec):
+    """节目录定位：先逐字匹配；不一致时按节号前缀唯一回退（记入 FUZZY）；仍失败抛中文错误。"""
+    exact = os.path.join(cd, f"{sec['num']} {sec['title']}")
+    if os.path.isdir(exact):
+        return exact
+    if not os.path.isdir(cd):
+        raise FileNotFoundError(
+            f"章节目录不存在：{cd}。请确认已先运行 generate_stripped_version.py，"
+            f"且章文件夹名与《专著目录》逐字一致。")
+    cands = [d for d in os.listdir(cd)
+             if os.path.isdir(os.path.join(cd, d)) and d.startswith(sec["num"] + " ")]
+    if len(cands) == 1:
+        note = f"节目录 {sec['num']}（目录：{sec['num']} {sec['title']} ｜ 实际：{cands[0]}）"
+        if note not in FUZZY:
+            FUZZY.append(note)
+        return os.path.join(cd, cands[0])
+    others = sorted(d for d in os.listdir(cd) if os.path.isdir(os.path.join(cd, d)))
+    raise FileNotFoundError(
+        f"节目录无法定位：期望「{sec['num']} {sec['title']}」；该章下实际有 {others}。"
+        f"多半是文件名漂移——请把目录名改回与《专著目录》逐字一致后重跑剥离与合并。")
+
+
 def locate(src, ch_title, sec, item=None, kind="item"):
     """在剥离版镜像树中定位文件；目录标题含'/'等非法字符时按编号前缀回退匹配。"""
     cd = os.path.join(src, ch_title)
     if kind == "item":
-        sd = os.path.join(cd, f"{sec['num']} {sec['title']}")
+        sd = _sec_dir(cd, sec)
         exact = os.path.join(sd, f"{item[0]} {item[1]}.md")
         if os.path.isfile(exact):
             return exact
@@ -103,13 +125,31 @@ def locate(src, ch_title, sec, item=None, kind="item"):
             return os.path.join(sd, cands[0])
         raise FileNotFoundError(f"小节 {item[0]} 无法唯一定位（候选 {cands}）：{sd}")
     if kind == "sec_summary":
-        sd = os.path.join(cd, f"{sec['num']} {sec['title']}")
+        sd = _sec_dir(cd, sec)
         return os.path.join(
             sd, f"{ch_title.split()[0]} {sec['num']}节 {sec['title']} 章节总结.md")
     if kind == "ch_summary":
         stem = os.path.join(cd, f"{sec['num']} 小结")
-        return stem + ".md" if os.path.isfile(stem + ".md") \
-            else os.path.join(stem, f"{sec['num']} 小结.md")
+        if os.path.isfile(stem + ".md"):
+            return stem + ".md"
+        if os.path.isfile(os.path.join(stem, f"{sec['num']} 小结.md")):
+            return os.path.join(stem, f"{sec['num']} 小结.md")
+        cands = ([f for f in os.listdir(cd)
+                  if f.startswith(sec["num"] + " ") and "小结" in f]
+                 if os.path.isdir(cd) else [])
+        if len(cands) == 1:
+            full = os.path.join(cd, cands[0])
+            inner = os.path.join(full, f"{sec['num']} 小结.md")
+            hit = full if os.path.isfile(full) else (inner if os.path.isfile(inner) else None)
+            if hit:
+                note = f"章末小结 {sec['num']}（目录：{sec['num']} 小结 ｜ 实际：{cands[0]}）"
+                if note not in FUZZY:
+                    FUZZY.append(note)
+                return hit
+        raise FileNotFoundError(
+            f"章末小结 {sec['num']} 无法定位：期望「{stem}.md」或同名文件夹；"
+            f"该章根下实际有 {sorted(os.listdir(cd)) if os.path.isdir(cd) else []}。"
+            f"请核对《专著目录》与剥离版目录名是否逐字一致。")
 
 
 def read_unit(path):
@@ -330,7 +370,7 @@ def build(root):
     _field(toc_p, 'TOC \\o "1-3" \\h \\z \\u',
            "（目录域：在 Word 中全选 Ctrl+A 后按 F9 更新，即可生成全书目录及页码）")
 
-    stats = {"ch": 0, "items": 0, "sec_sum": 0, "missing": [], "tables": 0}
+    stats = {"ch": 0, "items": 0, "sec_sum": 0, "missing": [], "tables": 0, "skipped": []}
     for ch in chapters:
         ch_title = ch["title"]
         doc.add_heading(ch_title, level=1)
@@ -345,28 +385,43 @@ def build(root):
             for item in sec["items"]:
                 doc.add_heading(f"{item[0]} {item[1]}", level=3)
                 if have:
-                    p = locate(str(src), ch_title, sec, item, "item")
-                    if not os.path.isfile(p):
-                        print(f"[提示] 缺少小节文件（跳过）：{p}")
-                        para(doc, "（本小节尚未完成，待并入。）", no_indent=True, color=GRAY)
+                    try:
+                        p = locate(str(src), ch_title, sec, item, "item")
+                        if not os.path.isfile(p):
+                            print(f"[提示] 缺少小节文件（跳过）：{p}")
+                            para(doc, "（本小节尚未完成，待并入。）", no_indent=True, color=GRAY)
+                            continue
+                        write_unit(doc, p)
+                        stats["items"] += 1
+                    except (ValueError, FileNotFoundError, OSError) as e:
+                        print(f"[跳过] 小节 {item[0]} 未能并入：{e}")
+                        para(doc, f"（小节 {item[0]} 未能并入：{e}）",
+                             no_indent=True, color=GRAY)
+                        stats["skipped"].append(f"小节 {item[0]} {item[1]}：{e}")
                         continue
-                    write_unit(doc, p)
-                    stats["items"] += 1
                 else:
                     para(doc, "（本小节尚未完成，待并入。）", no_indent=True, color=GRAY)
             is_end = sec["title"] == "小结"
             if have and is_end:
-                p = locate(str(src), ch_title, sec, kind="ch_summary")
-                if os.path.isfile(p):
-                    write_unit(doc, p)
+                try:
+                    p = locate(str(src), ch_title, sec, kind="ch_summary")
+                    if os.path.isfile(p):
+                        write_unit(doc, p)
+                except (ValueError, FileNotFoundError, OSError) as e:
+                    print(f"[跳过] 章末小结未能并入：{e}")
+                    stats["skipped"].append(f"章末小结 {sec['num']}：{e}")
             elif have and sec["items"]:
-                p = locate(str(src), ch_title, sec, kind="sec_summary")
-                if os.path.isfile(p):
-                    lead = para(doc, "【本节小结】", no_indent=True, space_before=10)
-                    for r0 in lead.runs:
-                        r0.bold = True
-                    write_unit(doc, p)
-                    stats["sec_sum"] += 1
+                try:
+                    p = locate(str(src), ch_title, sec, kind="sec_summary")
+                    if os.path.isfile(p):
+                        lead = para(doc, "【本节小结】", no_indent=True, space_before=10)
+                        for r0 in lead.runs:
+                            r0.bold = True
+                        write_unit(doc, p)
+                        stats["sec_sum"] += 1
+                except (ValueError, FileNotFoundError, OSError) as e:
+                    print(f"[跳过] 节级总结 {sec['num']} 未能并入：{e}")
+                    stats["skipped"].append(f"节级总结 {sec['num']} {sec['title']}：{e}")
     stats["tables"] = len(doc.tables)
     stats["fuzzy"] = list(FUZZY)
     doc.save(out)
@@ -374,7 +429,10 @@ def build(root):
 
 
 def main():
-    ap = argparse.ArgumentParser(description="合并 Word 稿生成（详细说明见文件头注释）")
+    ap = argparse.ArgumentParser(
+        description="合并 Word 稿生成（详细说明见文件头注释）",
+        epilog="示例：先跑 generate_stripped_version.py，再 python3 merge_to_word.py --root . "
+               "（需 pip3 install python-docx）。个别文件异常不会中断合并，会在结果中列出。")
     ap.add_argument("--root", default=".", help="项目根目录")
     args = ap.parse_args()
     root = Path(args.root).expanduser().resolve()
@@ -384,8 +442,14 @@ def main():
     for m0 in stats["missing"]:
         print(f"  - {m0}")
     print(f"已并入小节: {stats['items']}｜节级小结: {stats['sec_sum']}｜表格: {stats['tables']}")
+    if stats.get("skipped"):
+        print(f"注意：{len(stats['skipped'])} 个单元因文件缺失/结构异常未并入"
+              f"（Word 稿仍已生成，缺口处有灰色标注）：")
+        for s0 in stats["skipped"]:
+            print(f"  - {s0}")
+        print("  修复后重跑本脚本即可补齐（合并稿每次整体重建）。")
     if stats.get("fuzzy"):
-        print(f"编号回退匹配: {len(stats['fuzzy'])} 条（目录标题含文件系统非法字符，Word 标题仍用目录原文）")
+        print(f"编号回退匹配: {len(stats['fuzzy'])} 条（目录标题含文件系统非法字符或名称漂移，Word 标题仍用目录原文）")
         for f in stats["fuzzy"]:
             print(f"  - {f}")
     return 0
