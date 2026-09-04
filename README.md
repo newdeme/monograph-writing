@@ -16,11 +16,12 @@
 
 ## 1. Who is this for?
 
-Anyone writing a **book-length manuscript**: professors writing academic monographs, researchers writing technical books, engineers writing industry handbooks, graduate teams co-writing textbooks — especially if:
+Anyone writing a **long-form academic manuscript**: professors writing academic monographs, researchers writing technical books, engineers writing industry handbooks, graduate teams co-writing textbooks, and **doctoral/master's students writing theses (blind review included, and thesis-to-book conversion)** — especially if:
 
 - the book has a dozen chapters and hundreds of thousands of words, and **cannot be written in a single AI conversation**;
 - you use AI to write but **fear it fabricating references and data**;
 - multiple people / multiple sessions work in relay, and you **fear inconsistency and lost progress**.
+- you are writing a **thesis** and fear the AI can't tell *your own contributions* from *citable references* — misattributed innovation points, blind-review anonymization, and plagiarism-check pitfalls.
 
 If any of these sound familiar, this skill was designed for you. **No programming knowledge is required at any point** — your AI assistant runs every script for you.
 
@@ -35,6 +36,10 @@ If any of these sound familiar, this skill was designed for you. **No programmin
 | Fear of manuscript data leakage | All scripts run locally — no network, no telemetry, no data collection (see Section 6) |
 | Word count spirals out of control | Per-chapter word-count tiers, measured automatically (prose only) |
 | Final assembly is painful | One command generates the stripped clean copy and a fully-styled merged Word manuscript |
+| Can't tell "my own work" from "citable references" | Contribution classification: your published work is cited with a relation note; unpublished data stays as material (freezable into a citable dataset); unpublished drafts never masquerade as references |
+| Writing a thesis (blind review, innovation points) | Thesis mode: innovation-point register, publications-to-chapters relations, blind-review anonymization checklist, plagiarism-check discipline |
+| AI invents data in figures | Figure red line: statistical charts are generated only from registered data files (evidence cards + checksums + drift detection); concept diagrams get Mermaid drafts for you to redraw |
+| Multi-author relay descends into chaos | Collaboration protocol: the progress ledger + a handover note travel with the workspace; successors continue from the ledger cache with an identical workflow (**theses excluded** — same-author multi-session relay and advisor comments only; see the ethics note in Section 9) |
 
 ## 3. Quick Start (3 steps)
 
@@ -94,13 +99,14 @@ The laziest path: send the files to your AI assistant and say "**organize these 
 
 The boundary of your corpus = the boundary of **evidence**: every document you put in should support your argument. What may enter the **reference list** is further governed by contribution classification — published work by others and your own published work are citable (the latter with a relation note), while your own unpublished data/drafts stay as writing material by default (see the FAQ below and `references/evidence-corpus.md` §8). Setup steps for each option and upgrade paths: [`references/evidence-corpus.md`](references/evidence-corpus.md).
 
-## 5. The four automation scripts (your AI runs them; humans can read them)
+## 5. The five automation scripts (your AI runs them; humans can read them)
 
 | Script | What it does | When |
 |---|---|---|
 | `scripts/init_project.py` | Scaffolds the project from the frozen outline (config + two ledgers + instruction list) | Once, at the start |
 | `scripts/validate_manuscript.py` | Validates naming / structure / word counts / citation numbering / figure-table numbering | After every batch |
 | `scripts/generate_stripped_version.py` | Strips the "preparation" sections; generates clean-copy mirror tree + per-chapter merged files | After a chapter is finalized |
+| `scripts/generate_figures.py` | Generates statistical charts from registered data files per ledger §3b evidence cards (no invented data points) | When you need data figures (requires `pip3 install matplotlib`) |
 | `scripts/merge_to_word.py` | Produces a single, fully-styled Word manuscript with TOC field | When you need to deliver (requires `pip3 install python-docx`) |
 
 All project parameters live in one file — `00_管理文件/书稿配置.json`. Change word-count targets or add exemption tiers there; the scripts never need editing.
@@ -110,7 +116,7 @@ Note: script output and generated ledger templates are currently in Chinese (fun
 ## 6. Data privacy & technical facts
 
 - **Your data never leaves your computer**: all four scripts run locally — **no network, no telemetry, no data collection**. Your manuscript, outline, and ledgers stay on your own disk. Literature search goes through your own AI assistant and knowledge base, under your control.
-- **Minimal dependencies**: pure Python standard library (any Python 3 ≥ 3.9); the only extra dependency is `python-docx` for Word merging.
+- **Minimal dependencies**: pure Python standard library (any Python 3 ≥ 3.9); two optional dependencies as needed — `python-docx` for Word merging, `matplotlib` for data figures (your AI can install and run them).
 - **Platform compatibility**: follows the Agent Skills open specification; works with any compliant AI assistant.
 - **Reporting issues**: script bugs and security concerns go to GitHub Issues.
 
@@ -134,6 +140,8 @@ your-book/
 ```
 
 ## 9. Multi-author collaboration
+
+> **An academic-ethics red line first**: multi-author collaboration applies to **monographs, textbooks, technical books, collected reports** — works that can bear multiple authors. **A thesis must never be co-written.** In thesis projects, "multiple people" means only: (1) the same author relaying across sessions/devices via the ledger; (2) an advisor's review comments flowing through annotations. Chapter content must be the degree candidate's own; using the relay machinery to ghostwrite a thesis is academic misconduct.
 
 - Each co-author owns several chapters; everyone follows the same method (this skill *is* the standard).
 - Handover: the progress ledger + a handover note travel with the workspace.
@@ -177,6 +185,9 @@ No — that is the "contribution classification" red line: published work by oth
 **Q: Does it work for a thesis going to blind review?**
 Yes, with a dedicated guide: declaring the thesis genre creates an innovations-and-outputs register (innovation ↔ supporting chapters ↔ published papers), ready-made relation-note phrasing for your own published work, and a blind-review anonymization checklist (acknowledgements removed, self-citations de-identified or removed per your university's rule, full name-sweep before export). Citation renumbering after anonymization still goes through the validator until it passes. Plagiarism-check handling and the dual-submission risk of concurrently-submitted drafts are flagged in the ledger. See `references/thesis-guide.md`.
 
+**Q: Can the AI draw figures for me?**
+Two kinds: **data figures (statistical charts) — yes.** Put your data files (CSV/JSON) in the corpus, register an evidence card in ledger §3b (figure number + data file + checksum + chart recipe), and `generate_figures.py` renders bar/line/scatter/box/histogram charts from the data; re-run after data changes; data-file drift is flagged by the validator. **Concept diagrams (schematics/architecture) — drafts only.** The AI produces a Mermaid text draft (version-controlled under 05_图表/草稿/) for you to redraw; the manuscript keeps a "Figure X-Y (to be finalized)" placeholder, and the publication-grade artwork is yours — conceptual structure is your scholarly judgment. See `references/figure-guide.md`.
+
 **Q: GB/T 7714 got a 2025 revision — does the skill follow it?**
 Yes. The new standard (effective July 2026) adds preprint [PP], dataset [DS], and archive [A] rules — the type-identifier check accepts both old and new codes, and frozen datasets are cited as [DS/OL] per the new standard. If your institution or journal pins a specific version, theirs wins.
 
@@ -185,12 +196,12 @@ Yes. The new standard (effective July 2026) adds preprint [PP], dataset [DS], an
 If this skill helps your research, teaching, or work, a citation is the best way to support it. Click the **"Cite this repository"** button on the repository homepage (driven by [`CITATION.cff`](CITATION.cff)) to get a ready-to-use citation, or use the BibTeX entry below:
 
 ```bibtex
-@software{newdeme_monograph_writing,
-  author  = {newdeme},
+@software{chang2026monograph,
+  author  = {Chang, Sheng},
   title   = {monograph-writing: Academic Monograph Batch-Writing Assistant},
   year    = {2026},
   url     = {https://github.com/newdeme/monograph-writing},
-  version = {1.4.0},
+  version = {1.5.0},
   license = {Apache-2.0}
 }
 ```

@@ -113,6 +113,13 @@ LEDGER_TMPL = """# 写作进度台账
 |---|---|---|
 {pointer_rows}
 
+## 3b. 图表证据登记（每图一行；数据图红线见技能 references/figure-guide.md）
+
+（格式：`- 图X-Y｜类型（数据图/概念草图/作者供图）｜来源（数据文件路径 或 05_图表/草稿/xx.mmd）｜SHA256 前 8 位（数据图必填，其余填 -）｜生成方式（JSON 配方 / Mermaid 草稿 / 作者提供）｜登记日期`。
+正文引用的每个图号都必须在此登记；数据图只能由登记的数据文件生成，禁止自编数据点画图。）
+
+- （暂无）
+
 ## 4. 已核实文献缓存（题录核对通过，可直接引用）
 
 （格式：`- 作者. 题名[J]. 刊名, 年, 卷(期): 页码. ｜ 已核：日期＋核对位置`；新核实的当日登记，节省后续批次重查。）
@@ -220,6 +227,7 @@ CONFIG_TMPL = """{{
     "section_summary": [600, 800],
     "chapter_summary": [300, 500]
   }},
+  "figure": {{"dpi": 300, "format": "png", "font": ""}},
   "special_tiers": [],
   "exempt_patterns": [],
   "tolerance": 0.15,
@@ -313,6 +321,9 @@ def main():
     frozen.mkdir(exist_ok=True)
     if not (frozen / "定稿数据说明.md").is_file():
         (frozen / "定稿数据说明.md").write_text(FROZEN_NOTE, encoding="utf-8")
+    # 05_图表/：数据图（脚本生成）/ 草稿（Mermaid 概念草图）/ 定稿（作者提供）
+    for sub in ("数据图", "草稿", "定稿"):
+        (root / "05_图表" / sub).mkdir(parents=True, exist_ok=True)
 
     # 定位/生成目录文件
     catalog = Path(args.catalog).expanduser().resolve() if args.catalog else None
@@ -392,6 +403,7 @@ def main():
         made.append("创新点与成果声明.md（学位论文专项）")
     print("  生成文件：00_管理文件/ 下 " + "、".join(made))
     print("  另建 02_语料/定稿数据/ 冻结快照区（C-数据冻结用，见 evidence-corpus.md §8）")
+    print("  另建 05_图表/（数据图/草稿/定稿）——图表证据卡登记见台账 §3b 与 references/figure-guide.md")
     if args.genre == "thesis":
         print("  学位论文提示：成果四分类红线（本人未发表数据/草稿不进参考文献表）"
               "与盲审隐名版规程见 references/thesis-guide.md；"

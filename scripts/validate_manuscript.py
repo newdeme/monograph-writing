@@ -185,6 +185,28 @@ def word_verdict(n: int, lo: int, hi: int, tol: float):
 
 
 FROZEN_ROW_RE = re.compile(r"^- (.+?)｜(.+?)｜([0-9a-fA-F]{8})｜(.+?)｜(.+)$")
+FIG_ROW_RE = re.compile(
+    r"^- (图\d+-\d+)｜(数据图|概念草图|作者供图)｜(.+?)｜([0-9a-fA-F]{8}|-)｜(.+?)｜(\S+)$")
+
+
+def parse_fig_ledger(root: Path):
+    """解析台账 §3b 图表证据登记 → {图号: (类型, 来源, sha8, 日期)}。"""
+    ledger = root / "00_管理文件" / "写作进度台账.md"
+    if not ledger.is_file():
+        return {}
+    figs, in3b = {}, False
+    for line in ledger.read_text(encoding="utf-8").splitlines():
+        if line.startswith("## 3b"):
+            in3b = True
+            continue
+        if in3b and line.startswith("## "):
+            break
+        if not in3b:
+            continue
+        m = FIG_ROW_RE.match(line)
+        if m and not m.group(1).startswith("（"):
+            figs[m.group(1)] = (m.group(2), m.group(3), m.group(4), m.group(6))
+    return figs
 
 
 def parse_frozen_ledger(root: Path):
@@ -363,6 +385,26 @@ def main():
             missing = sorted(set(range(1, max(ds) + 1)) - set(ds))
             print(f"[ERROR] 第{chap}章 图编号跳号: 已出现 {sorted(set(ds))}，缺失 {missing}")
             total_err += 1
+
+    # ---- 图表证据卡检查（references/figure-guide.md）----
+    fig_rows = parse_fig_ledger(root)
+    referenced = {f"图{c}-{d}" for c, ds in chapter_figs.items() for d in ds}
+    for fig_id in sorted(referenced - set(fig_rows)):
+        print(f"[WARN] 图无证据卡登记：正文引用了 {fig_id}，但台账 §3b 未登记该图"
+              f"（数据图须登记数据文件+校验和，概念图登记 .mmd 草稿；格式见 references/figure-guide.md）")
+        total_warn += 1
+    for fig_id, (kind, src, sha8, _date) in sorted(fig_rows.items()):
+        src_path = (root / src)
+        if not src_path.is_file():
+            print(f"[WARN] 图表证据卡来源缺失：{fig_id} 的 {src} 不存在（核对 §3b 来源列）")
+            total_warn += 1
+            continue
+        if kind == "数据图" and sha8 != "-":
+            cur = hashlib.sha256(src_path.read_bytes()).hexdigest()[:8]
+            if cur != sha8.lower():
+                print(f"[WARN] 图数据漂移：{fig_id} 的数据文件 {src} 当前（{cur}）与登记（{sha8}）不一致"
+                      f"——依赖该图的章节须复核后重生成")
+                total_warn += 1
 
     # ---- 成果四分类配套检查（references/evidence-corpus.md §8）----
     frozen_rows = parse_frozen_ledger(root)

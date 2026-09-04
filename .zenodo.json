@@ -1,0 +1,24 @@
+{
+  "title": "monograph-writing: Academic Monograph Batch-Writing Assistant",
+  "description": "A batch-writing pipeline for academic monographs, textbooks, technical books, and theses, packaged as an Agent Skill for AI writing assistants. Features a disk-persisted progress ledger, an academic red-line system (no fabricated references; contribution classification with dataset freezing and drift tracking), thesis-mode tooling (innovation-point registers, blind-review anonymization), data-bound figure generation, and automated validation scripts.",
+  "creators": [
+    {
+      "name": "Chang, Sheng",
+      "orcid": "0000-0002-4935-2766",
+      "affiliation": "Beijing Normal University"
+    }
+  ],
+  "keywords": [
+    "academic-writing",
+    "monograph",
+    "thesis-writing",
+    "AI-assisted-writing",
+    "agent-skills",
+    "writing-pipeline",
+    "citation-validation",
+    "research-data-management"
+  ],
+  "license": "Apache-2.0",
+  "upload_type": "software",
+  "access_right": "open"
+}
