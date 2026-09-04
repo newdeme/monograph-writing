@@ -92,7 +92,7 @@ At initialization, the "corpus onboarding interview" offers four choices (upgrad
 
 The laziest path: send the files to your AI assistant and say "**organize these into the project's 02_语料 folder, grouped by theme**".
 
-The boundary of your corpus = the boundary of what can be cited: every document you put in should be one you're willing to see in your reference list. Setup steps for each option and upgrade paths: [`references/evidence-corpus.md`](references/evidence-corpus.md).
+The boundary of your corpus = the boundary of **evidence**: every document you put in should support your argument. What may enter the **reference list** is further governed by contribution classification — published work by others and your own published work are citable (the latter with a relation note), while your own unpublished data/drafts stay as writing material by default (see the FAQ below and `references/evidence-corpus.md` §8). Setup steps for each option and upgrade paths: [`references/evidence-corpus.md`](references/evidence-corpus.md).
 
 ## 5. The four automation scripts (your AI runs them; humans can read them)
 
@@ -171,6 +171,15 @@ Yes. Any multi-chapter long manuscript fits. Word-count tiers live in `书稿配
 **Q: Does it work on Windows? What about non-Chinese manuscripts?**
 The scripts are pure Python standard library (only Word merging needs `python-docx`) and run on macOS/Linux/Windows; quote paths containing spaces or CJK characters. Chinese-language writing is the best supported (word counts are measured in Chinese characters; GB/T 7714 type-identifier checking included). Other languages run, but counting and punctuation rules may be imprecise — multilingual support is on the roadmap.
 
+**Q: Will the AI cite my own unpublished data or drafts as references?**
+No — that is the "contribution classification" red line: published work by others is cited normally; **your own published** work is cited with a relation note ("this chapter extends the author's published work [n]"); **your own unpublished data** stays as writing material (labeled "author's experimental data" in text and figures; freeze it into a registered snapshot to cite it formally as [DS/OL]); **unpublished drafts never enter the reference list** — they are rewritten, not cited. Discipline differences are explicit too (unpublished archives in the humanities are cited per disciplinary convention, e.g. [A]). See `references/evidence-corpus.md` §8.
+
+**Q: Does it work for a thesis going to blind review?**
+Yes, with a dedicated guide: declaring the thesis genre creates an innovations-and-outputs register (innovation ↔ supporting chapters ↔ published papers), ready-made relation-note phrasing for your own published work, and a blind-review anonymization checklist (acknowledgements removed, self-citations de-identified or removed per your university's rule, full name-sweep before export). Citation renumbering after anonymization still goes through the validator until it passes. Plagiarism-check handling and the dual-submission risk of concurrently-submitted drafts are flagged in the ledger. See `references/thesis-guide.md`.
+
+**Q: GB/T 7714 got a 2025 revision — does the skill follow it?**
+Yes. The new standard (effective July 2026) adds preprint [PP], dataset [DS], and archive [A] rules — the type-identifier check accepts both old and new codes, and frozen datasets are cited as [DS/OL] per the new standard. If your institution or journal pins a specific version, theirs wins.
+
 ## 11. Citing this project
 
 If this skill helps your research, teaching, or work, a citation is the best way to support it. Click the **"Cite this repository"** button on the repository homepage (driven by [`CITATION.cff`](CITATION.cff)) to get a ready-to-use citation, or use the BibTeX entry below:
@@ -181,7 +190,7 @@ If this skill helps your research, teaching, or work, a citation is the best way
   title   = {monograph-writing: Academic Monograph Batch-Writing Assistant},
   year    = {2026},
   url     = {https://github.com/newdeme/monograph-writing},
-  version = {1.3.0},
+  version = {1.4.0},
   license = {Apache-2.0}
 }
 ```

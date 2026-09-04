@@ -11,6 +11,11 @@
 5. **文献语料**（红线第 2 条的落地）：走"语料接入访谈"四选一——① AI 客户端知识库 / ② Zotero 等文献管理器 / ③ 项目内 `02_语料/` 文件夹（格式不限，作者自行补充） / ④ 暂不接入（降级模式）。选定后按台账 §1 结构化格式登记；选型对比与从零搭建见 `references/evidence-corpus.md`。
 6. **图表编号与命名规则**：默认 `表X-Y`/`图X-Y`、文件名分隔符用空格、三段式文件结构——除非作者另有要求，否则按默认执行并登记台账 §1。
 7. **符号体系锚点**：全书统一符号在哪个小节立法确立（如"3.1.5 坐标系与符号体系"）？没有的话建议在最早的计算理论章设一个，登记术语台账 §2。
+8. **文体与学科声明**（决定"本人未发表资料能否进参考文献表"的默认方向，差异说明见 `references/evidence-corpus.md` §8）：
+   - `genre`：专著 / 教材 / 技术书 / 学位论文 / 报告集；
+   - `discipline`：理工 / 人文社科 / 自定义（＋一句话说明学科惯例）；
+   - 学位论文加问一句 `blind_review`：是否须交盲审隐名版（是 → 生成《创新点与成果声明.md》并提示作者读 `references/thesis-guide.md`）；
+   - 登记于《书稿配置.json》对应字段＋台账 §1【文体/学科】行。
 
 ## 2. 《书稿配置.json》逐项说明
 
@@ -19,6 +24,9 @@
   "book_title": "书名（不含书名号）",
   "author": "作者名（可选）",
   "citation_style": "GB/T 7714（顺序编码制）",
+  "genre": "monograph",
+  "discipline": "stem",
+  "blind_review": false,
   "catalog_file": "00_管理文件/专著目录.md",
   "manuscript_dir": "01_书稿",
   "stripped_dir": "04_剥离版书稿",
@@ -40,6 +48,7 @@
 
 | 字段 | 说明 |
 |---|---|
+| `genre` / `discipline` / `blind_review` | 文体（monograph 专著/textbook 教材/technical 技术书/thesis 学位论文/report-collection 报告集）与学科（stem 理工/hss 人文社科/custom 自定义）声明；学位论文是否须交盲审隐名版。驱动成果四分类提醒（`genre: thesis` 时 init 生成《创新点与成果声明.md》）与学科差异提示，详见 `references/evidence-corpus.md` §8 与 `references/thesis-guide.md` |
 | `word_targets.default` | 未在 `by_chapter` 列出的章的小节字数区间 |
 | `word_targets.by_chapter` | 按章号覆盖小节字数区间（键为章号字符串） |
 | `special_tiers` | 按文件名正则匹配的特殊字数档（特色节豁免等）；**按数组顺序取首个命中**，窄档（如 `^12.4.5 `）要排在宽档（`^12.4.\d+ `）之前 |

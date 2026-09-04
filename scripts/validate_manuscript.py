@@ -20,12 +20,15 @@ validate_manuscript.py —— 专著书稿校验脚本（monograph-writing 技�
   5. 参考文献条目含文献类型标识（[J]/[M]/[C]/[R]/[D]/[S]/[EB/OL] 等，WARN 级，可关）
   6. 表/图编号：章内序号从 1 开始、无跳号（按小节顺序合并检查）
   7. 未匹配任何命名规则的文件提示人工确认
+  8. 成果四分类配套（WARN 级）：台账 §4b 登记素材的漂移检查（原文件 hash 与冻结时不符）；
+     正文使用"作者试验数据/本文数据"类标注而 §4b 无任何冻结登记时的提醒
 
 输出：逐文件结果（OK / WARN / ERROR）＋末尾汇总；存在 ERROR 时退出码 1。
 字数口径：中文字符（含中文标点）逐字计，连续西文/数字串计 1；
         仅统计叙述文字（正文部分，不含写作准备、参考文献及 Markdown 表格行）。
 """
 import argparse
+import hashlib
 import json
 import re
 import sys
@@ -181,6 +184,53 @@ def word_verdict(n: int, lo: int, hi: int, tol: float):
     return "OK", f"字数 {n}（目标 {lo}~{hi}）"
 
 
+FROZEN_ROW_RE = re.compile(r"^- (.+?)｜(.+?)｜([0-9a-fA-F]{8})｜(.+?)｜(.+)$")
+
+
+def parse_frozen_ledger(root: Path):
+    """解析台账 §4b 素材版本登记 → [(原文件, 快照名, sha8, 日期, 章节)]；无登记返回 []。"""
+    ledger = root / "00_管理文件" / "写作进度台账.md"
+    if not ledger.is_file():
+        return []
+    rows, in4b = [], False
+    for line in ledger.read_text(encoding="utf-8").splitlines():
+        if line.startswith("## 4b"):
+            in4b = True
+            continue
+        if in4b and line.startswith("## "):
+            break
+        if not in4b:
+            continue
+        m = FROZEN_ROW_RE.match(line)
+        if m and not m.group(1).startswith("（"):
+            rows.append((m.group(1).strip(), m.group(2).strip(),
+                         m.group(3).lower(), m.group(4).strip(), m.group(5).strip()))
+    return rows
+
+
+def check_frozen_materials(root: Path, rows):
+    """成果四分类配套检查（references/evidence-corpus.md §8）。返回 WARN 列表。"""
+    warns = []
+    corpus = root / "02_语料"
+    for orig, snap, sha8, _date, _chapters in rows:
+        src = corpus / orig
+        if not src.is_file():
+            warns.append(
+                f"素材漂移：台账 §4b 登记的原文件不存在：{orig}"
+                f"（快照在 02_语料/定稿数据/{snap}，误删可从快照恢复）")
+            continue
+        cur = hashlib.sha256(src.read_bytes()).hexdigest()[:8]
+        if cur != sha8:
+            warns.append(
+                f"素材漂移：{orig} 当前内容与冻结时（{sha8}）不一致——依赖它的章节须复核；"
+                f"数据确已更新则把新版快照到 02_语料/定稿数据/ 并在 §4b 追加一行登记")
+        if not (corpus / "定稿数据" / snap).is_file():
+            warns.append(
+                f"冻结快照缺失：02_语料/定稿数据/{snap} 不存在（台账 §4b 登记 {orig}）——"
+                f"请补放快照或更正 §4b 登记")
+    return warns
+
+
 def main():
     ap = argparse.ArgumentParser(
         description="专著书稿校验（详细说明见文件头注释）",
@@ -220,6 +270,7 @@ def main():
     total_err = total_warn = 0
     n_ok = n_exempt = 0
     chapter_tabs, chapter_figs = {}, {}
+    author_data_files = []      # 正文使用"作者试验数据/本文数据"标注的文件（成果四分类检查用）
     print(f"== 专著书稿校验：{ms_dir} ==\n")
     for p in files:
         if any(k in p.name for k in skip_kw):
@@ -256,6 +307,8 @@ def main():
 
         body, berrs = extract_body(text, kind)
         errs += berrs
+        if re.search(r"作者试验数据|作者实测|本文数据", body or ""):
+            author_data_files.append(p.name)
         for pat, tier, _r in special_tiers:      # 特殊档优先于章档
             if pat.match(p.name):
                 lo, hi = tier
@@ -310,6 +363,21 @@ def main():
             missing = sorted(set(range(1, max(ds) + 1)) - set(ds))
             print(f"[ERROR] 第{chap}章 图编号跳号: 已出现 {sorted(set(ds))}，缺失 {missing}")
             total_err += 1
+
+    # ---- 成果四分类配套检查（references/evidence-corpus.md §8）----
+    frozen_rows = parse_frozen_ledger(root)
+    for w in check_frozen_materials(root, frozen_rows):
+        print(f"[WARN] {w}")
+        total_warn += 1
+    if author_data_files and not frozen_rows:
+        print("[WARN] C-数据证据未冻结：以下文件正文标注了「作者试验数据/本文数据」，"
+              "但台账 §4b 无任何冻结登记：")
+        for name in author_data_files:
+            print(f"    - {name}")
+        print("    怎么处理：数据已定稿 → 快照复制到 02_语料/定稿数据/ 并在台账 §4b 登记一行；"
+              "仍在迭代 → 属正常在研状态，本 WARN 记入台账 §6（说明理由）即可收批；"
+              "确需著录进参考文献表 → 冻结后按 [DS/OL] 著录（见 evidence-corpus.md §8）。")
+        total_warn += len(author_data_files)
 
     print(f"\n== 汇总：OK {n_ok} 个文件，ERROR {total_err} 项，WARN {total_warn} 项，"
           f"豁免 {n_exempt} 个 ==")

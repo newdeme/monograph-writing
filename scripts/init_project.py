@@ -50,9 +50,10 @@ CORPUS_NOTE = """# 这里是你的文献资料库（02_语料/）
 - 重复副本建议去重；多篇文章合订的 PDF 建议拆分后放入；
 - 写作中 AI 只引用本文件夹（或你登记的其他语料）内的资料，并逐条与原文核对题录。
 
-铁律：语料的边界＝可引用的边界。放进来的每一份资料，都应该是你愿意让它出现在
-参考文献表里的资料。更多接入方式（AI 知识库 / Zotero / 降级模式）见技能文档
-references/evidence-corpus.md。
+铁律：语料的边界＝证据的边界（放进来的每份资料都要能支撑论证）；而"可引用"的边界
+按成果四分类区分——他人已发表与你已发表的成果可进参考文献表（后者正文须注明关系），
+你自己未发表的数据/草稿默认只作素材（数据定稿后冻结到 定稿数据/ 并登记台账 §4b，
+可按国标 [DS/OL] 著录）。分类细则见 references/evidence-corpus.md §8。
 """
 
 SAMPLE_CATALOG = """# 《示例书名》目录（示例版——请作者改写后冻结）
@@ -91,6 +92,7 @@ LEDGER_TMPL = """# 写作进度台账
   - 【名称/位置】（如：AI 助手内知识库"书稿文献"；或 Zotero 集合名；或 02_语料/）：【待填写】
   - 【检索方式】（如：知识库搜索；或条目检索；或 AI 直接读文件）：【待填写】
   - 【核对方式】新文献题录须读原文首页核对后写入，核对过即登记 §4 缓存；降级模式下只可引用作者手工核实过的文献
+  - 【文体/学科】genre=（专著/教材/技术书/学位论文/报告集）；discipline=（理工/人文社科/自定义）——决定"本人未发表资料能否进参考文献表"的默认方向（成果四分类见技能 references/evidence-corpus.md §8）
 - 图表编号：`图X-Y` / `表X-Y`（X=章号，Y 章内连续），图表须有中文标题且正文有解读
 - 术语/符号一致性：登记于《术语与符号一致性台账.md》；符号体系锚点：【填写：全书符号在哪一小节统一确立】
 - 文件命名：小节 `X.Y.Z 小节标题.md`；节级总结 `第X章 Y.Z节 节标题 章节总结.md`；章末小结 `X.Y 小结.md`（与目录逐字一致，分隔符用空格）
@@ -114,6 +116,14 @@ LEDGER_TMPL = """# 写作进度台账
 ## 4. 已核实文献缓存（题录核对通过，可直接引用）
 
 （格式：`- 作者. 题名[J]. 刊名, 年, 卷(期): 页码. ｜ 已核：日期＋核对位置`；新核实的当日登记，节省后续批次重查。）
+
+- （暂无）
+
+## 4b. 素材版本登记（C-数据冻结快照；规则见技能 references/evidence-corpus.md §8）
+
+（把定稿数据的快照复制到 `02_语料/定稿数据/` 后在此登记一行：
+`- 原文件名（位于 02_语料/…）｜快照文件名｜SHA256 前 8 位｜冻结日期｜被依赖章节｜用途`。
+原文件此后若被改动，校验脚本会报"素材漂移"WARN 提醒复核；冻结数据集可按国标 [DS/OL] 著录。）
 
 - （暂无）
 
@@ -156,10 +166,49 @@ TERM_LEDGER_TMPL = """# 术语与符号一致性台账
 - （暂无）
 """
 
+FROZEN_NOTE = """# 定稿数据（冻结快照区）
+
+把**已定稿、不再改动**的作者数据复制一份快照放进来，并在《写作进度台账.md》§4b 登记一行：
+`- 原文件名（位于 02_语料/…）｜快照文件名｜SHA256 前 8 位｜冻结日期｜被依赖章节｜用途`。
+
+- 冻结后的数据才可按国标 [DS/OL] 著录进参考文献表；未冻结的作者数据只作素材（正文标"作者试验数据"）。
+- 原 02_语料/ 里的同名文件后来改动时，校验脚本会提示"素材漂移"，依赖章节需复核——本区快照即当时的凭证。
+- SHA256 前 8 位获取（可让 AI 代算）：终端跑 `shasum -a 256 <文件>`（macOS/Linux）或 `certutil -hashfile <文件> SHA256`（Windows）。
+"""
+
+INNOVATION_TMPL = """# 创新点与成果声明｜《{title}》
+
+> 用途：学位论文专项登记（配置 genre=thesis 时由初始化生成）。每批次收尾维护；答辩前逐条核对。
+> 规则见技能 references/thesis-guide.md。
+
+## 1. 创新点登记表
+
+| 编号 | 创新点（一句话判断句） | 支撑章节 | 对应成果（B 类） | 状态 |
+|---|---|---|---|---|
+| （示例）创1 | 提出了…方法，在…条件下优于… | 第3章 3.2、3.3 | 已发表[1] / 拟投稿 / 未发表 | 已验证 |
+
+## 2. 攻读期间成果与章节关系清单（B 类关系注明台账）
+
+| 成果题录 | 与章节关系 | 关系注明句（写进正文首现处） | 隐名版处理 |
+|---|---|---|---|
+| （示例）张三, 李四. 某方法研究[J]. 某学报, 2024. | 第4章基于其扩展 | "本章基于作者已发表工作[n]扩展：…" | 去名化保留 / 移除（按本校规定） |
+
+## 3. 待裁定事项（草稿在投/重复发表风险等）
+
+- （暂无）
+"""
+
+GENRE_ZH = {"monograph": "专著", "textbook": "教材", "technical": "技术书",
+            "thesis": "学位论文", "report-collection": "报告集"}
+DISC_ZH = {"stem": "理工", "hss": "人文社科", "custom": "自定义"}
+
 CONFIG_TMPL = """{{
   "book_title": "{title}",
   "author": "",
   "citation_style": "{cite}",
+  "genre": "{genre}",
+  "discipline": "{discipline}",
+  "blind_review": {blind},
   "catalog_file": "00_管理文件/{catalog_name}",
   "manuscript_dir": "01_书稿",
   "stripped_dir": "04_剥离版书稿",
@@ -232,6 +281,14 @@ def main():
                     help="尚无目录：生成示例目录供作者填写后退出")
     ap.add_argument("--force", action="store_true",
                     help="覆盖已存在的台账（慎用，不动 01_书稿/）")
+    ap.add_argument("--genre", choices=list(GENRE_ZH), default="monograph",
+                    help="文体：monograph 专著（默认）/ textbook 教材 / technical 技术书 / "
+                         "thesis 学位论文 / report-collection 报告集")
+    ap.add_argument("--discipline", choices=list(DISC_ZH), default="stem",
+                    help="学科：stem 理工（默认，本人未发表数据只作素材）/ hss 人文社科"
+                         "（未刊档案等按学科惯例著录）/ custom 自定义")
+    ap.add_argument("--blind-review", action="store_true",
+                    help="学位论文须交盲审隐名版（配合 --genre thesis 使用，登记 blind_review）")
     args = ap.parse_args()
 
     root = Path(args.root).expanduser().resolve()
@@ -251,6 +308,11 @@ def main():
     corpus.mkdir(exist_ok=True)
     if not (corpus / "把文献放这里.md").is_file():
         (corpus / "把文献放这里.md").write_text(CORPUS_NOTE, encoding="utf-8")
+    # 02_语料/定稿数据/：C-数据冻结快照区（成果四分类配套，见 evidence-corpus.md §8）
+    frozen = corpus / "定稿数据"
+    frozen.mkdir(exist_ok=True)
+    if not (frozen / "定稿数据说明.md").is_file():
+        (frozen / "定稿数据说明.md").write_text(FROZEN_NOTE, encoding="utf-8")
 
     # 定位/生成目录文件
     catalog = Path(args.catalog).expanduser().resolve() if args.catalog else None
@@ -303,6 +365,8 @@ def main():
         for i, ch in enumerate(chapters, 1))
     config = CONFIG_TMPL.format(
         title=title, cite="GB/T 7714（顺序编码制）",
+        genre=args.genre, discipline=args.discipline,
+        blind="true" if args.blind_review else "false",
         catalog_name=CATALOG_NAME,
         skip_kw=json.dumps(SKIP_NAME_KEYWORDS, ensure_ascii=False),
         by_chapter=json.dumps({}, ensure_ascii=False))
@@ -315,13 +379,25 @@ def main():
     (mgmt / "术语与符号一致性台账.md").write_text(TERM_LEDGER_TMPL, encoding="utf-8")
     (mgmt / "写作指令清单.md").write_text(
         gen_instructions(title, chapters), encoding="utf-8")
+    if args.genre == "thesis":
+        (mgmt / "创新点与成果声明.md").write_text(
+            INNOVATION_TMPL.format(title=title), encoding="utf-8")
 
     print(f"[初始化完成] 项目：{root}")
-    print(f"  书名：《{title}》｜章：{len(chapters)}｜小节：{n_items}｜章末小结指令：{n_end}")
-    print("  生成文件：00_管理文件/ 下 书稿配置.json、写作进度台账.md、"
-          "术语与符号一致性台账.md、写作指令清单.md")
+    print(f"  书名：《{title}》｜文体：{GENRE_ZH[args.genre]}（{args.genre}）｜"
+          f"学科：{DISC_ZH[args.discipline]}｜章：{len(chapters)}｜小节：{n_items}｜"
+          f"章末小结指令：{n_end}")
+    made = ["书稿配置.json", "写作进度台账.md", "术语与符号一致性台账.md", "写作指令清单.md"]
+    if args.genre == "thesis":
+        made.append("创新点与成果声明.md（学位论文专项）")
+    print("  生成文件：00_管理文件/ 下 " + "、".join(made))
+    print("  另建 02_语料/定稿数据/ 冻结快照区（C-数据冻结用，见 evidence-corpus.md §8）")
+    if args.genre == "thesis":
+        print("  学位论文提示：成果四分类红线（本人未发表数据/草稿不进参考文献表）"
+              "与盲审隐名版规程见 references/thesis-guide.md；"
+              f"blind_review={'true' if args.blind_review else 'false'}。")
     print("\n下一步（建议由 AI 助手代办）：")
-    print("  1. 与作者核对《书稿配置.json》（字数分级），并完成语料接入访谈（四选一，见技能 references/evidence-corpus.md）登记台账 §1；")
+    print("  1. 与作者核对《书稿配置.json》（字数分级与文体/学科声明），并完成语料接入访谈（四选一，见技能 references/evidence-corpus.md）登记台账 §1；")
     print("  2. 确认第一批次范围后，按技能三步法开工；")
     print(f"  3. 每批次收尾跑：python3 validate_manuscript.py --root \"{root}\"")
     return 0
