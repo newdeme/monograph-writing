@@ -136,7 +136,8 @@ your-book/
 ├── 01_书稿/第X章 章标题/Y.Z 节标题/   the whole manuscript (grows batch by batch)
 ├── 02_语料/                your evidence corpus (PDF/Word/Excel/Markdown — you decide)
 ├── 03_归档素材/            external drafts (go through the repair workflow; never used directly)
-└── 04_剥离版书稿/          clean copies + merged Word manuscript (script-generated)
+├── 04_剥离版书稿/          clean copies + merged Word manuscript (script-generated)
+└── 05_图表/                figures: data plots (script) / drafts (Mermaid) / finals (author)
 ```
 
 ## 9. Multi-author collaboration
