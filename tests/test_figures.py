@@ -27,7 +27,7 @@ def test_init_creates_figure_scaffold(project):
 def _register_3b(root, row):
     p = root / "00_管理文件" / "写作进度台账.md"
     t = p.read_text(encoding="utf-8")
-    i = t.index("## 4.")           # §3b 段止于 §4
+    i = t.index("## 3c.")          # §3b 段止于 §3c
     head, tail = t[:i], t[i:]
     j = head.rfind("- （暂无）")
     assert j != -1

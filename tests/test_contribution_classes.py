@@ -72,7 +72,7 @@ def _freeze_and_register(root, content="v1 数据\n"):
     row = f"- 数据表格/试验数据.md｜{snap}｜{sha8}｜2026-09-04｜1.1.1｜试验参数\n"
     ledger = root / "00_管理文件" / "写作进度台账.md"
     t = ledger.read_text(encoding="utf-8")
-    i = t.index("## 5.")
+    i = t.index("## 4c.")          # §4b 段止于 §4c
     head, tail = t[:i], t[i:]
     j = head.rfind("- （暂无）")
     assert j != -1, "台账 §4b 占位行缺失"

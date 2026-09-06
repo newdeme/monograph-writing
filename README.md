@@ -39,6 +39,7 @@ If any of these sound familiar, this skill was designed for you. **No programmin
 | Can't tell "my own work" from "citable references" | Contribution classification: your published work is cited with a relation note; unpublished data stays as material (freezable into a citable dataset); unpublished drafts never masquerade as references |
 | Writing a thesis (blind review, innovation points) | Thesis mode: innovation-point register, publications-to-chapters relations, blind-review anonymization checklist, plagiarism-check discipline |
 | AI invents data in figures | Figure red line: statistical charts are generated only from registered data files (evidence cards + checksums + drift detection); concept diagrams get Mermaid drafts for you to redraw |
+| Draft prose is uneven and sounds AI-generated | Polish batches: three passes (argument completeness / figure & number details / terminology and language) + conservative-editing rule (meaning-changing edits need your approval) + a Chinese de-AI-style checklist |
 | Multi-author relay descends into chaos | Collaboration protocol: the progress ledger + a handover note travel with the workspace; successors continue from the ledger cache with an identical workflow (**theses excluded** — same-author multi-session relay and advisor comments only; see the ethics note in Section 9) |
 
 ## 3. Quick Start (3 steps)
@@ -104,7 +105,7 @@ The boundary of your corpus = the boundary of **evidence**: every document you p
 | Script | What it does | When |
 |---|---|---|
 | `scripts/init_project.py` | Scaffolds the project from the frozen outline (config + two ledgers + instruction list) | Once, at the start |
-| `scripts/validate_manuscript.py` | Validates naming / structure / word counts / citation numbering / figure-table numbering | After every batch |
+| `scripts/validate_manuscript.py` | Validates naming / structure / word counts / citation numbering / figure-table numbering / key-number consistency | After every batch |
 | `scripts/generate_stripped_version.py` | Strips the "preparation" sections; generates clean-copy mirror tree + per-chapter merged files | After a chapter is finalized |
 | `scripts/generate_figures.py` | Generates statistical charts from registered data files per ledger §3b evidence cards (no invented data points) | When you need data figures (requires `pip3 install matplotlib`) |
 | `scripts/merge_to_word.py` | Produces a single, fully-styled Word manuscript with TOC field | When you need to deliver (requires `pip3 install python-docx`) |
@@ -202,7 +203,7 @@ If this skill helps your research, teaching, or work, a citation is the best way
   title   = {monograph-writing: Academic Monograph Batch-Writing Assistant},
   year    = {2026},
   url     = {https://github.com/newdeme/monograph-writing},
-  version = {1.5.0},
+  version = {1.6.0},
   license = {Apache-2.0}
 }
 ```

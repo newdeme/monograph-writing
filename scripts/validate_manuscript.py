@@ -22,6 +22,8 @@ validate_manuscript.py —— 专著书稿校验脚本（monograph-writing 技�
   7. 未匹配任何命名规则的文件提示人工确认
   8. 成果四分类配套（WARN 级）：台账 §4b 登记素材的漂移检查（原文件 hash 与冻结时不符）；
      正文使用"作者试验数据/本文数据"类标注而 §4b 无任何冻结登记时的提醒
+  9. 关键数值一致性（WARN 级，台账 §3c）：登记数值首现可溯、关联数据图的数据文件核对、
+     同一数据多口径冲突——语义级变体（7.5 h vs 7小时30分）须人工终检
 
 输出：逐文件结果（OK / WARN / ERROR）＋末尾汇总；存在 ERROR 时退出码 1。
 字数口径：中文字符（含中文标点）逐字计，连续西文/数字串计 1；
@@ -230,6 +232,80 @@ def parse_frozen_ledger(root: Path):
     return rows
 
 
+NUM_ROW_RE = re.compile(r"^- (.+?)｜(.+?)｜(.+?)｜(.+)$")
+
+
+def parse_number_ledger(root: Path):
+    """解析台账 §3c 关键数值登记 → [(数值串, 含义, 首现小节, 关联图表)]；无登记返回 []。"""
+    ledger = root / "00_管理文件" / "写作进度台账.md"
+    if not ledger.is_file():
+        return []
+    rows, in3c = [], False
+    for line in ledger.read_text(encoding="utf-8").splitlines():
+        if line.startswith("## 3c"):
+            in3c = True
+            continue
+        if in3c and line.startswith("## "):
+            break
+        if not in3c:
+            continue
+        m = NUM_ROW_RE.match(line)
+        if m and not m.group(1).startswith("（"):
+            rows.append((m.group(1).strip(), m.group(2).strip(),
+                         m.group(3).strip(), m.group(4).strip()))
+    return rows
+
+
+def check_key_numbers(root: Path, num_rows, fig_rows, ms_dir: Path):
+    """关键数值一致性检查（references/polish-workflow.md §3/§7；字符串级）。
+
+    检查三件事：①登记可溯——首现小节文件存在且正文含该数值串；
+    ②图表核对——登记关联图表（数据图）时，其数据文件内容含该数值的数字部分；
+    ③登记冲突——同一首现小节+同一含义出现两条不同数值串。
+    语义级变体（如「7.5 h」vs「7小时30分」）脚本查不了，终检时人工过一遍。"""
+    warns = []
+    # 收集全部书稿正文文本（含表格行——数字常出现在表里）
+    body_cache = {}
+    for p in sorted(ms_dir.rglob("*.md")):
+        try:
+            body_cache[p.name] = p.read_text(encoding="utf-8")
+        except UnicodeDecodeError:
+            body_cache[p.name] = ""
+    seen = {}
+    for value, meaning, subsec, figs in num_rows:
+        # ① 首现可溯
+        hit = next((fn for fn, txt in body_cache.items()
+                    if fn.startswith(subsec) and value in txt), None)
+        if hit is None:
+            any_hit = next((fn for fn, txt in body_cache.items() if value in txt), None)
+            if any_hit:
+                warns.append(f"关键数值登记可溯性：数值「{value}」在书稿中见于「{any_hit}」，"
+                             f"但登记的首现小节「{subsec}」未检出——更正 §3c 首现列，或把该处写法统一为登记串")
+            else:
+                warns.append(f"关键数值登记可溯性：「{value}」（{meaning}）在全部书稿中未检出"
+                             f"——数值已改则同步更新 §3c 登记串（先改台账再改正文）")
+        # ② 图表数据核对
+        for fig_id in [f.strip() for f in figs.split("、")] if figs and figs != "-" else []:
+            info = fig_rows.get(fig_id)
+            if not info:
+                continue  # 图未登记 §3b 已由图表证据卡检查报过，不重复
+            _kind, src, _sha, _d = info
+            src_path = root / src
+            if not src_path.is_file():
+                continue  # 来源缺失已由证据卡检查报过
+            num_core = next((s for s in re.findall(r"\d+(?:\.\d+)?", value)), None)
+            if num_core and num_core not in src_path.read_text(encoding="utf-8", errors="ignore"):
+                warns.append(f"关键数值不一致：§3c 登记「{value}」（{meaning}）关联 {fig_id}，"
+                             f"但其数据文件 {src} 中未检出数字 {num_core}——正文与图各说各话，须复核")
+        # ③ 登记冲突
+        key = (subsec, meaning)
+        if key in seen and seen[key] != value:
+            warns.append(f"关键数值登记冲突：「{meaning}」（{subsec}）登记了两个数值"
+                         f"「{seen[key]}」与「{value}」——同一数据全书只能有一个口径")
+        seen[key] = value
+    return warns
+
+
 def check_frozen_materials(root: Path, rows):
     """成果四分类配套检查（references/evidence-corpus.md §8）。返回 WARN 列表。"""
     warns = []
@@ -409,6 +485,12 @@ def main():
     # ---- 成果四分类配套检查（references/evidence-corpus.md §8）----
     frozen_rows = parse_frozen_ledger(root)
     for w in check_frozen_materials(root, frozen_rows):
+        print(f"[WARN] {w}")
+        total_warn += 1
+
+    # ---- 关键数值一致性检查（references/polish-workflow.md；台账 §3c）----
+    num_rows = parse_number_ledger(root)
+    for w in check_key_numbers(root, num_rows, fig_rows, ms_dir):
         print(f"[WARN] {w}")
         total_warn += 1
     if author_data_files and not frozen_rows:
