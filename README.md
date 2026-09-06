@@ -1,4 +1,4 @@
-# monograph-writing — Academic Monograph Batch-Writing Assistant
+# monograph-writing — Academic Manuscript Batch-Writing System
 
 **English** · [简体中文](README.zh-CN.md)
 
@@ -200,10 +200,10 @@ If this skill helps your research, teaching, or work, a citation is the best way
 ```bibtex
 @software{chang2026monograph,
   author  = {Chang, Sheng},
-  title   = {monograph-writing: Academic Monograph Batch-Writing Assistant},
+  title   = {monograph-writing: Academic Manuscript Batch-Writing System},
   year    = {2026},
   url     = {https://github.com/newdeme/monograph-writing},
-  version = {1.6.0},
+  version = {1.6.1},
   license = {Apache-2.0}
 }
 ```

@@ -2,6 +2,15 @@
 
 本项目遵循[语义化版本](https://semver.org/)：功能新增 → 次版本号，问题修复 → 修订号。
 
+## v1.6.1（2026-09-06）
+
+### 英文 tagline 更定＋腾讯 WorkBuddy 技能市场上架适配
+
+- **英文 tagline 更定**（作者裁定）：`Academic Monograph Batch-Writing Assistant` → **`Academic Manuscript Batch-Writing System`**——与中文名「学术书稿批次化写作系统」逐词对应（manuscript 涵盖专著/教材/技术书/学位论文）。同步替换三份 README 标题/blockquote/BibTeX 共 6 处；
+- **WorkBuddy 上架适配**（对照 [腾讯开放平台技能文档](https://open.workbuddy.cn/docs/skill) 逐项核对，作者裁定 author=newdeme）：SKILL.md frontmatter 新增 6 字段——`display_name`（学术书稿批次化写作系统）、`display_name_en`（新 tagline）、`description_zh`（市场展示简短中文简介）、`description_en`、`version`、`author`。核对结论：目录结构（SKILL.md＋references/＋scripts/）、description 触发词模式、脚本 Bash 调用模式、references 引用模式 4 项天然相符；allowed-tools 与 disable-model-invocation 主动不填（通用工具不设白名单、保持可自动触发）；
+- **兼容性**：Anthropic/Cherry 规范对 frontmatter 额外字段宽容忽略——一处维护、双平台可用；
+- **上架包**：`dist/monograph-writing-v1.6.1.zip`（skills/monograph-writing/ 结构，含 SKILL.md＋9 references＋5 scripts，不含 tests/examples），由作者在 WorkBuddy 开放平台上传；上架成功后 README 再补市场安装渠道一句。
+
 ## v1.6.0（2026-09-05）
 
 ### 成稿质量深化：润色批次＋关键数值一致性＋核验四态（借鉴五步 SCI 写作法五个辅助 skill 实地调研）

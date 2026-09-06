@@ -8,7 +8,7 @@
 [![Release](https://img.shields.io/github/v/release/newdeme/monograph-writing?include_prereleases)](https://github.com/newdeme/monograph-writing/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-> Academic Monograph Batch-Writing Assistant —— 把"写一本十几章的书"变成 AI 可接力、可校验、可多人协作的流水线。
+> Academic Manuscript Batch-Writing System —— 把"写一本十几章的书"变成 AI 可接力、可校验、可多人协作的流水线。
 
 **想快速看懂怎么用？** 直接浏览完整示例项目：[examples/demo-project](examples/README.md)——从初始化、写小节、校验到生成纯正文版的全流程产物。
 
@@ -198,10 +198,10 @@ AI 会运行 `init_project.py` 生成项目骨架，然后与你确认字数分�
 ```bibtex
 @software{chang2026monograph,
   author  = {Chang, Sheng},
-  title   = {monograph-writing: Academic Monograph Batch-Writing Assistant},
+  title   = {monograph-writing: Academic Manuscript Batch-Writing System},
   year    = {2026},
   url     = {https://github.com/newdeme/monograph-writing},
-  version = {1.6.0},
+  version = {1.6.1},
   license = {Apache-2.0}
 }
 ```
