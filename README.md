@@ -58,6 +58,8 @@ No command line? Copy this sentence and paste it into your AI assistant — it w
 
 Works with any AI assistant that supports the Agent Skills open specification (Claude Code, Claude Agent SDK, Cherry Studio, …). Start a new conversation after installing.
 
+Prefer a marketplace? The skill is also live on the **Tencent WorkBuddy Skill Market** — [open.workbuddy.cn/skill/all](https://open.workbuddy.cn/skill/all) (search "monograph-writing").
+
 **Step 2: Prepare your table of contents**
 
 Put your book outline into one Markdown file (your AI can format it for you; see a complete example in [examples/demo-project](examples/demo-project/00_管理文件/专著目录.md)):
@@ -116,7 +118,7 @@ Note: script output and generated ledger templates are currently in Chinese (fun
 
 ## 6. Data privacy & technical facts
 
-- **Your data never leaves your computer**: all four scripts run locally — **no network, no telemetry, no data collection**. Your manuscript, outline, and ledgers stay on your own disk. Literature search goes through your own AI assistant and knowledge base, under your control.
+- **Your data never leaves your computer**: all five scripts run locally — **no network, no telemetry, no data collection**. Your manuscript, outline, and ledgers stay on your own disk. Literature search goes through your own AI assistant and knowledge base, under your control.
 - **Minimal dependencies**: pure Python standard library (any Python 3 ≥ 3.9); two optional dependencies as needed — `python-docx` for Word merging, `matplotlib` for data figures (your AI can install and run them).
 - **Platform compatibility**: follows the Agent Skills open specification; works with any compliant AI assistant.
 - **Reporting issues**: script bugs and security concerns go to GitHub Issues.
@@ -155,7 +157,7 @@ your-book/
 Simplest: put them all into the `02_语料/` folder created at initialization (a usage note is inside). Any format, your call on content. Then tell the AI: "the corpus is in 02_语料/ — search and verify against it when writing." For large collections or semantic search, upgrade to an AI knowledge base or Zotero (see Section 4). In every mode the AI cites only corpus materials, verified one by one against the originals.
 
 **Q: Will my manuscript be uploaded or collected?**
-No. All four scripts run locally on your computer — no network, no telemetry, no data collection. Manuscripts and ledgers stay on your disk. Literature search goes through your own AI assistant and knowledge base (see Section 6).
+No. All five scripts run locally on your computer — no network, no telemetry, no data collection. Manuscripts and ledgers stay on your disk. Literature search goes through your own AI assistant and knowledge base (see Section 6).
 
 **Q: I can't use a command line at all. Can I still use this?**
 Yes. Installation is one copy-pasted sentence to your AI assistant; after that, all scripts are run by the assistant — you just talk ("continue", "next chapter", "set chapter 2 to 1200–1800 words").
