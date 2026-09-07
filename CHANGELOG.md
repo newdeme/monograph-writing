@@ -2,6 +2,15 @@
 
 本项目遵循[语义化版本](https://semver.org/)：功能新增 → 次版本号，问题修复 → 修订号。
 
+## v1.6.2（2026-09-07）
+
+### 平台版本递增＋上架后文档修订
+
+- **版本递增**：腾讯 WorkBuddy 平台要求重新上传的包版本号必须严格大于已发布版本——version 1.6.1 → **1.6.2**（SKILL.md frontmatter / CITATION.cff / 双语 README BibTeX 三处同步）；包功能面（SKILL.md＋9 references＋5 scripts 行为）与 v1.6.1 完全一致，无任何逻辑变更；
+- **README 补市场安装渠道**（上架成功后执行既定决策）：中英 README「快速开始」各加一句腾讯 WorkBuddy 技能市场安装指引（Cherry 副本同步）；
+- **脚本计数修正**：两份 README「四个/four scripts」→「五个」（v1.5.0 加入 `generate_figures.py` 时遗漏的漂移）；
+- **上架包**：`dist/monograph-writing-v1.6.2.zip`（根级 `monograph-writing/` 结构——即平台验证接受的实包结构；SKILL.md＋9 references＋5 scripts，不含 tests/examples）。
+
 ## v1.6.1（2026-09-06）
 
 ### 英文 tagline 更定＋腾讯 WorkBuddy 技能市场上架适配
