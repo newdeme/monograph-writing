@@ -205,7 +205,7 @@ If this skill helps your research, teaching, or work, a citation is the best way
   title   = {monograph-writing: Academic Manuscript Batch-Writing System},
   year    = {2026},
   url     = {https://github.com/newdeme/monograph-writing},
-  version = {1.6.2},
+  version = {1.6.3},
   license = {Apache-2.0}
 }
 ```

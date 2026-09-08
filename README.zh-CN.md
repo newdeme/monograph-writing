@@ -203,7 +203,7 @@ AI 会运行 `init_project.py` 生成项目骨架，然后与你确认字数分�
   title   = {monograph-writing: Academic Manuscript Batch-Writing System},
   year    = {2026},
   url     = {https://github.com/newdeme/monograph-writing},
-  version = {1.6.2},
+  version = {1.6.3},
   license = {Apache-2.0}
 }
 ```
