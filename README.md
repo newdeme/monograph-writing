@@ -58,7 +58,11 @@ No command line? Copy this sentence and paste it into your AI assistant — it w
 
 Works with any AI assistant that supports the Agent Skills open specification (Claude Code, Claude Agent SDK, Cherry Studio, …). Start a new conversation after installing.
 
-Prefer a marketplace? The skill is also live on the **Tencent WorkBuddy Skill Market** — [open.workbuddy.cn/skill/all](https://open.workbuddy.cn/skill/all) (search "monograph-writing").
+Prefer a marketplace? The skill is also live on multiple platforms:
+
+- **Tencent WorkBuddy Skill Market** — [open.workbuddy.cn/skill/all](https://open.workbuddy.cn/skill/all) (search "monograph-writing")
+- **虾评 Skill** — [xiaping.coze.com/skill/886eab17-7a88-43d5-af6b-6cf6573689b3](https://xiaping.coze.com/skill/886eab17-7a88-43d5-af6b-6cf6573689b3)
+- **魔搭社区** — [modelscope.cn/skills/newdeme/monograph-writing](https://modelscope.cn/skills/newdeme/monograph-writing)
 
 **Step 2: Prepare your table of contents**
 
@@ -121,7 +125,7 @@ Note: script output and generated ledger templates are currently in Chinese (fun
 - **Your data never leaves your computer**: all five scripts run locally — **no network, no telemetry, no data collection**. Your manuscript, outline, and ledgers stay on your own disk. Literature search goes through your own AI assistant and knowledge base, under your control.
 - **Minimal dependencies**: pure Python standard library (any Python 3 ≥ 3.9); two optional dependencies as needed — `python-docx` for Word merging, `matplotlib` for data figures (your AI can install and run them).
 - **Platform compatibility**: follows the Agent Skills open specification; works with any compliant AI assistant.
-- **Third-party evaluation & security**: SkillHub TRACE evaluation **4.7/5 "Excellent"** (Trust 5.0; report based on the initial v1.4.0 release); Tencent Security Cloud Ding Lab Skills assessment **100/100 "Trustworthy"** and Tencent Threat Intelligence Center verdict "**safe**" (security reports on the v1.4.0 package, 2026-09-07); Xiaoping Skill marketplace security check **passed** on the current v1.6.3 package (intent/behavior consistency verified, all four risk categories low).
+- **Third-party evaluation & security**: SkillHub TRACE evaluation **4.7/5 "Excellent"** (Trust 5.0; report based on the initial v1.4.0 release); Tencent Security Cloud Ding Lab Skills assessment **100/100 "Trustworthy"** and Tencent Threat Intelligence Center verdict "**safe**" (security reports on the v1.4.0 package, 2026-09-07); 虾评 Skill marketplace security check **passed** on the current v1.6.3 package ([view](https://xiaping.coze.com/skill/886eab17-7a88-43d5-af6b-6cf6573689b3) · intent/behavior consistency verified, all four risk categories low).
 - **Reporting issues**: script bugs and security concerns go to GitHub Issues.
 
 ## 7. Core design principles
