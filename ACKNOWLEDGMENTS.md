@@ -6,13 +6,12 @@
 
 ## Skills · 五步法调研（v1.6.0）
 
-调研起点为微信文章《五步写作 SCI 论文》推荐的五个辅助 skill，逐个实地核查原文后取其精华、去其糟粕。每条均为「来源思想 → 本技能转化」：
+调研起点为微信文章《刚刚，ChatGPT-6 用五步写完了SCI论文》推荐的五个辅助 skill（跨四个仓库），逐个实地核查原文后取其精华、去其糟粕。每条均为「来源思想 → 本技能转化」：
 
-- **paper-polish-workflow**：润色工作流思想 → 转化为中文场景的润色批次（三轮润色法：论证完整 → 图表方法细节 → 术语语言统一）、保守修改原则（可能改变科学含义的改动保留原句、列建议交作者裁定）与中文去 AI 腔清单
-- **nature-academic-search**：字段级核验思想 → 转化为引用核验四态与检索留痕（台账 §4/§4c）；其开放网络检索路由与本技能「只查作者语料」哲学冲突，**不采纳**
-- **K-Dense scientific-writing**：数字对账思想 → 轻量化为关键数值跨章一致性校验（台账 §3c）
-- **venue-templates**：强制时效规则 → 转化为交稿规范时效核验（盲审导出登记格式手册版本与获取渠道）
-- **academic-paper-strategist**：同批调研；其样章风格学习方向列为 Roadmap 候选（Issue #4），未纳入现行实现
+- **[paper-polish-workflow](https://github.com/Lylll9436/Paper-Polish-Workflow-skill)**：润色工作流思想 → 转化为中文场景的润色批次（三轮润色法：论证完整 → 图表方法细节 → 术语语言统一）、保守修改原则（可能改变科学含义的改动保留原句、列建议交作者裁定）与中文去 AI 腔清单
+- **[nature-academic-search](https://github.com/wp-a/nature-academic-search)**：字段级核验思想 → 转化为引用核验四态与检索留痕（台账 §4/§4c）；其开放网络检索路由与本技能「只查作者语料」哲学冲突，**不采纳**
+- **[academic-paper-skills](https://github.com/lishix520/academic-paper-skills)**（其 academic-paper-strategist skill）：同批调研；其样章风格学习方向列为 Roadmap 候选（Issue #4），未纳入现行实现
+- **[K-Dense-AI/scientific-agent-skills](https://github.com/K-Dense-AI/scientific-agent-skills)**（含 scientific-writing 与 venue-templates 两个 skill）：scientific-writing 的数字对账思想 → 轻量化为关键数值跨章一致性校验（台账 §3c）；venue-templates 的强制时效规则 → 转化为交稿规范时效核验（盲审导出登记格式手册版本与获取渠道）
 
 同批明确不采纳的机制（与本技能「判断与执行分离、轻依赖」哲学冲突）：开放网络检索路由、伪精确打分、逐句交互、LaTeX 模板体系、多脚本重体系。
 
@@ -23,7 +22,7 @@
 
 ## Inspiration · 灵感源
 
-- 微信文章《五步写作 SCI 论文》—— v1.6.0 五 skill 调研的触发源
+- 微信文章《[刚刚，ChatGPT-6 用五步写完了SCI论文](https://mp.weixin.qq.com/s/4MbGaEGLmkAyNlkCBaVA4g)》—— v1.6.0 五 skill 调研的触发源
 
 ## Standards · 规范
 
