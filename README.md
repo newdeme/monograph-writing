@@ -7,6 +7,7 @@
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
 [![Release](https://img.shields.io/github/v/release/newdeme/monograph-writing?include_prereleases)](https://github.com/newdeme/monograph-writing/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+<a href="https://xiaping.coze.com/skill/886eab17-7a88-43d5-af6b-6cf6573689b3?ref=92bf2c4d-6648-4821-8c2a-94680995ef57"><img src="https://img.shields.io/badge/%E8%99%BE%E8%AF%84-%E5%B7%B2%E4%B8%8A%E6%9E%B6%20%C2%B7%20%E5%85%A8%205%20%E6%98%9F-7C5CFF" alt="虾评已上架，用户评测全 5 星"></a>
 
 > Turn "writing a 12-chapter book" into an AI-assisted, script-validated, multi-author pipeline — with a hard no-fabrication guarantee for every citation.
 
@@ -61,6 +62,7 @@ Works with any AI assistant that supports the Agent Skills open specification (C
 Prefer a marketplace? The skill is also live on multiple platforms:
 
 - **Tencent WorkBuddy Skill Market** — [open.workbuddy.cn/skill/all](https://open.workbuddy.cn/skill/all) (search "monograph-writing")
+- **SkillHub** — [skillhub.cn/skills/user_a72e0254/monograph-writing](https://skillhub.cn/skills/user_a72e0254/monograph-writing)
 - **虾评 Skill** — [xiaping.coze.com/skill/886eab17-7a88-43d5-af6b-6cf6573689b3](https://xiaping.coze.com/skill/886eab17-7a88-43d5-af6b-6cf6573689b3)
 - **魔搭社区** — [modelscope.cn/skills/newdeme/monograph-writing](https://modelscope.cn/skills/newdeme/monograph-writing)
 

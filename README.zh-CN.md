@@ -7,6 +7,7 @@
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
 [![Release](https://img.shields.io/github/v/release/newdeme/monograph-writing?include_prereleases)](https://github.com/newdeme/monograph-writing/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+<a href="https://xiaping.coze.com/skill/886eab17-7a88-43d5-af6b-6cf6573689b3?ref=92bf2c4d-6648-4821-8c2a-94680995ef57"><img src="https://img.shields.io/badge/%E8%99%BE%E8%AF%84-%E5%B7%B2%E4%B8%8A%E6%9E%B6%20%C2%B7%20%E5%85%A8%205%20%E6%98%9F-7C5CFF" alt="虾评已上架，用户评测全 5 星"></a>
 
 > Academic Manuscript Batch-Writing System —— 把"写一本十几章的书"变成 AI 可接力、可校验、可多人协作的流水线。
 
@@ -53,7 +54,12 @@
 
 装好后新开一个对话即可生效。如果你会用命令行（需已装 Node.js），也可以直接执行：`npx skills add newdeme/monograph-writing`。
 
-也可以直接从技能市场安装：**腾讯 WorkBuddy 技能市场**（[open.workbuddy.cn/skill/all](https://open.workbuddy.cn/skill/all) 内搜索 monograph-writing）。
+也可以直接从技能市场安装：
+
+- **腾讯 WorkBuddy 技能市场**：[open.workbuddy.cn/skill/all](https://open.workbuddy.cn/skill/all)（搜索 monograph-writing）
+- **SkillHub**：[skillhub.cn/skills/user_a72e0254/monograph-writing](https://skillhub.cn/skills/user_a72e0254/monograph-writing)
+- **虾评 Skill**：[xiaping.coze.com/skill/886eab17-7a88-43d5-af6b-6cf6573689b3](https://xiaping.coze.com/skill/886eab17-7a88-43d5-af6b-6cf6573689b3)
+- **魔搭社区**：[modelscope.cn/skills/newdeme/monograph-writing](https://modelscope.cn/skills/newdeme/monograph-writing)
 
 **第 2 步：准备你的目录**
 把全书大纲整理成一个 Markdown 文件（格式如下，让 AI 帮你排版也行；完整示例见 [examples/demo-project](examples/demo-project/00_管理文件/专著目录.md)）：
@@ -113,7 +119,7 @@ AI 会运行 `init_project.py` 生成项目骨架，然后与你确认字数分�
 - **数据不出你的电脑**：五个脚本全部在本地运行，**不联网、无遥测、不收集任何数据**；你的书稿、目录、台账全部保存在你自己的磁盘上。文献检索通过你自己的 AI 助手与知识库进行，同样由你掌控。
 - **依赖极简**：脚本仅用 Python 标准库（装好 Python 3 即可）；两个可选依赖按需安装——生成 Word 稿的 `python-docx`、生成数据图的 `matplotlib`（均可让 AI 代装代跑）。
 - **平台兼容**：遵循 Agent Skills 开放规范，任何支持该规范的 AI 助手平台均可使用。
-- **第三方评测与安全检测**：SkillHub TRACE 评测 **4.7/5 · 优秀**（可信度 5.0；报告基于 v1.4.0 初版）；腾讯安全云鼎实验室 Skills 安全评估 **100/100 · 可信**，腾讯安全威胁情报中心结论「**安全**」（安全报告基于 v1.4.0 包，2026-09-07）；虾评 Skill 平台安检**通过**（针对 v1.6.3 当前包：意图/行为一致性核验 ✅，四类风险均为低）。
+- **第三方评测与安全检测**：SkillHub TRACE 评测 **4.7/5 · 优秀**（可信度 5.0；报告基于 v1.4.0 初版）；腾讯安全云鼎实验室 Skills 安全评估 **100/100 · 可信**，腾讯安全威胁情报中心结论「**安全**」（安全报告基于 v1.4.0 包，2026-09-07）；虾评 Skill 平台安检**通过**（[查看](https://xiaping.coze.com/skill/886eab17-7a88-43d5-af6b-6cf6573689b3)·针对 v1.6.3 当前包：意图/行为一致性核验 ✅，四类风险均为低）。
 - **问题反馈**：脚本缺陷或安全问题请通过 GitHub Issues 反馈。
 
 ## 七、核心理念（为什么这样设计）
