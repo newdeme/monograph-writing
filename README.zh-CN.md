@@ -220,6 +220,7 @@ AI 会运行 `init_project.py` 生成项目骨架，然后与你确认字数分�
 - 本技能源自一部真实学术专著的完整写作实践，方法论经 200+ 小节批次检验。
 - 欢迎通过 Issue / Pull Request 反馈改进（批次经验、新校验规则、其他引用格式适配等）。商业合作、私有化部署指导或定制开发，请通过 GitHub Issues 与维护者联系。
 - 本项目以 [Apache License 2.0](LICENSE) 发布，版权所有 © 2026 Sheng Chang；含专利授权条款，可放心在学术与商业项目中使用。
+- 本项目借鉴了社区先行技能的思想方法（设计空间调研＋转化），详见 [ACKNOWLEDGMENTS.md](ACKNOWLEDGMENTS.md)。
 
 ---
 

@@ -222,6 +222,7 @@ If this skill helps your research, teaching, or work, a citation is the best way
 - This skill distills the complete writing practice of a real academic monograph — the methodology is battle-tested over 200+ section batches.
 - Feedback and improvements welcome via Issues / Pull Requests (batch experiences, new validation rules, adaptations to other citation styles). For commercial cooperation, private-deployment guidance, or custom development, please reach the maintainer via GitHub Issues.
 - Released under the [Apache License 2.0](LICENSE), © 2026 newdeme — includes patent grant, safe for academic and commercial use.
+- Ideas adopted from prior Agent Skills work via a design-space survey: see [ACKNOWLEDGMENTS.md](ACKNOWLEDGMENTS.md).
 
 ---
 
